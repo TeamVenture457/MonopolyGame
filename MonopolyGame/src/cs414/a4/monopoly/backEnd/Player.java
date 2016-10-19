@@ -4,7 +4,7 @@ public class Player extends Owner{
 	
 	private String name;
 	private String token;
-	private Boolean isInJail;
+	private boolean isInJail;
 
 	public Player() {
 		// TODO Auto-generated constructor stub
