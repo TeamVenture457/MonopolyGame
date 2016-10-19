@@ -6,12 +6,10 @@ import java.util.TimeZone;
 
 public class Dice {
 	private Random r;
-	private Calendar calendar;
-	long seconds;
 
 	public Dice() {
-		calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-		seconds = calendar.getTimeInMillis() / 1000L;
+		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+		long seconds = calendar.getTimeInMillis() / 1000L;
 		r = new Random(seconds);
 	}
 	
