@@ -4,8 +4,8 @@ public class Space {
 	
 	private String name;
 	private String type;
-	private Boolean isProperty;
-	private Integer rank;
+	private boolean isProperty;
+	private int rank;
 
 	public Space() {
 		// TODO Auto-generated constructor stub
