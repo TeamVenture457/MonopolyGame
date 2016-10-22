@@ -6,8 +6,9 @@ public class Utility extends Property{
 		super(n, c, r, m);
 	}
 	
-	public void mortgage(){
-		
+	public boolean mortgage(){
+		setIsMortgaged(true);
+		return true;
 	}
 
 }

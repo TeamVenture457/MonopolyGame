@@ -18,8 +18,9 @@ public class Street extends Property{
 		return false;
 	}
 	
-	public void mortgage(){
-		
+	public boolean mortgage(){
+		//Not yet implemented
+		return false;
 	}
 	
 	public void placeHouse(){

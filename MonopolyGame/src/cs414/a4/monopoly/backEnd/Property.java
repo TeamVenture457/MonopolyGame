@@ -40,6 +40,6 @@ public abstract class Property {
 		isMortgaged = m;
 	}
 	
-	public abstract void mortgage();
+	public abstract boolean mortgage();
 
 }
