@@ -30,5 +30,14 @@ public class Street extends Property{
 	public void placeHotel(){
 		
 	}
+	
+	public void generateDescription(){
+		String temp = "Street\n";
+		temp += getName() + "\n";
+		temp += "Price: " + getCost() + "\n";
+		temp += "Rent: " + getRent() + "\n";
+		temp += "Mortgage: " + getMortgageValue();
+		setDescription(temp);
+	}
 
 }

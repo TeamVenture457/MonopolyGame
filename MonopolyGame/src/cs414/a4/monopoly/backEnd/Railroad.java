@@ -10,5 +10,14 @@ public class Railroad extends Property{
 		setIsMortgaged(true);
 		return true;
 	}
+	
+	public void generateDescription(){
+		String temp = "Railroad\n";
+		temp += getName() + "\n";
+		temp += "Price: " + getCost() + "\n";
+		temp += "Rent: " + getRent() + "\n";
+		temp += "Mortgage: " + getMortgageValue();
+		setDescription(temp);
+	}
 
 }

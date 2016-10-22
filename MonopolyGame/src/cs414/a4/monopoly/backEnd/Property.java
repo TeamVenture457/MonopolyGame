@@ -7,6 +7,7 @@ public abstract class Property {
 	private int rent;
 	private int mortgageValue;
 	private boolean isMortgaged;
+	private String description;
 	
 	Owner myOwner;
 	
@@ -17,6 +18,7 @@ public abstract class Property {
 		mortgageValue = m;
 		isMortgaged = false;
 		myOwner = bank;
+		generateDescription();
 	}
 	
 	public String getName(){
@@ -51,6 +53,15 @@ public abstract class Property {
 		myOwner = newOwner;
 	}
 	
+	public String getDescription(){
+		return description;
+	}
+	
+	public void setDescription(String desc){
+		description = desc;
+	}
+	
 	public abstract boolean mortgage();
+	public abstract void generateDescription();
 
 }
