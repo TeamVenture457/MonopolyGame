@@ -48,7 +48,9 @@ public class Street extends Property{
 	}
 	
 	public boolean mortgage(){
-		//Not yet implemented
+		if(numHouses == 0 && hotel == false){
+			setIsMortgaged(true);
+		}
 		return false;
 	}
 	
