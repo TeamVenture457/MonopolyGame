@@ -33,7 +33,7 @@ public class Space {
 	public String getSpaceDescription(){
 		String spaceDescription = "Name: " + name + "\nSpace Type: " + type.toString() + "\nRank: " + rank + "\nDeed Type: ";
 		if(deed instanceof Property){
-			spaceDescription += deed.getClass().getSimpleName();
+			spaceDescription += deed.getDescription();
 		}
 		else {
 			spaceDescription += "null";

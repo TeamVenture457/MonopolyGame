@@ -143,6 +143,7 @@
       <position>12</position>
       <type>utility</type>
       <price>150</price>
+      <rent>0</rent>
       <utility1>4*roll</utility1>
       <utility2>10*roll</utility2>
       <mortgagevalue>75</mortgagevalue>
@@ -349,6 +350,7 @@
       <position>28</position>
       <type>utility</type>
       <price>150</price>
+      <rent>0</rent>
       <utility1>4*roll</utility1>
       <utility2>10*roll</utility2>
       <mortgagevalue>75</mortgagevalue>

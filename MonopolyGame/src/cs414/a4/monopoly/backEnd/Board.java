@@ -62,18 +62,44 @@ public class Board {
 				int rank = Integer.parseInt(position);
 
 				if (thisSpaceType.equals(SpaceType.PROPERTY)) {
+					String costString = eElement.getElementsByTagName("price").item(0).getTextContent();
+					int cost = Integer.parseInt(costString);
+					String rentString = eElement.getElementsByTagName("rent").item(0).getTextContent();
+					int rent = Integer.parseInt(rentString);
+					String mortgageValueString = eElement.getElementsByTagName("mortgagevalue").item(0).getTextContent();
+					int mortgageValue = Integer.parseInt(mortgageValueString); 
+					
+					
 					switch (type) {
 					case "street":
-						Street thisStreet = new Street();
+						String rent1HouseString = eElement.getElementsByTagName("rent1house").item(0).getTextContent();
+						int rent1House = Integer.parseInt(rent1HouseString);
+						String rent2HouseString = eElement.getElementsByTagName("rent2houses").item(0).getTextContent();
+						int rent2House = Integer.parseInt(rent2HouseString);
+						String rent3HouseString = eElement.getElementsByTagName("rent3houses").item(0).getTextContent();
+						int rent3House = Integer.parseInt(rent3HouseString);
+						String rent4HouseString = eElement.getElementsByTagName("rent4houses").item(0).getTextContent();
+						int rent4House = Integer.parseInt(rent4HouseString);
+						String rentHotelString = eElement.getElementsByTagName("renthotel").item(0).getTextContent();
+						int rentHotel = Integer.parseInt(rentHotelString);
+						Colors thisColor = getColor(eElement.getElementsByTagName("color").item(0).getTextContent());
+						String houseCostString = eElement.getElementsByTagName("housecost").item(0).getTextContent();
+						int houseCost = Integer.parseInt(houseCostString);						
+						String hotelCostString = eElement.getElementsByTagName("hotelcost").item(0).getTextContent();
+						int hotelCost = Integer.parseInt(hotelCostString);
+						Street thisStreet = new Street(name, cost, rent, mortgageValue, bank);
+						thisStreet.setColor(thisColor);
+						thisStreet.setHouseRents(rent1House, rent2House, rent3House, rent4House, rentHotel);
+						thisStreet.setHouseCost(houseCost);
+						thisStreet.setHotelCost(hotelCost);
 						thisSpace = new Space(name, thisSpaceType, rank, thisStreet);
-						System.out.println("Street " + name + " has color " + getColor(eElement.getElementsByTagName("color").item(0).getTextContent()).toString());
 						break;
 					case "railroad":
-						Railroad thisRailroad = new Railroad();
+						Railroad thisRailroad = new Railroad(name, cost, rent, mortgageValue, bank);
 						thisSpace = new Space(name, thisSpaceType, rank, thisRailroad);
 						break;
 					case "utility":
-						Utility thisUtility = new Utility();
+						Utility thisUtility = new Utility(name, cost, rent, mortgageValue, bank);
 						thisSpace = new Space(name, thisSpaceType, rank, thisUtility);
 						break;
 					default:
