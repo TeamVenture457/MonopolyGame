@@ -7,7 +7,7 @@ public class Railroad extends Property{
 	}
 	
 	public void mortgage(){
-		isMortgaged = true;
+		setIsMortgaged(true);
 	}
 
 }

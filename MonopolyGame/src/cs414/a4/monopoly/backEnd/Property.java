@@ -36,6 +36,10 @@ public abstract class Property {
 		return isMortgaged;
 	}
 	
+	public void setIsMortgaged(boolean m){
+		isMortgaged = m;
+	}
+	
 	public abstract void mortgage();
 
 }
