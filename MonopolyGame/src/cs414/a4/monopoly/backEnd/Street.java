@@ -53,6 +53,7 @@ public class Street extends Property{
 	public boolean removeHotel(){
 		if(hotel == true){
 			hotel = false;
+			numHouses = 4;
 			return true;
 		}
 		return false;
