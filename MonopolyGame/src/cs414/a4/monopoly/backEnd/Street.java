@@ -5,6 +5,8 @@ public class Street extends Property{
 	private int numHouses;
 	private boolean hotel;
 	private Colors color;
+	private int houseCost;
+	private int hotelCost;
 	
 	public Street(String name, int cost, int rent, int mortgageValue, Owner bank){
 		super(name, cost, rent, mortgageValue, bank);
@@ -12,8 +14,33 @@ public class Street extends Property{
 		hotel = false;
 	}
 	
+	public int getHouseCost(){
+		return houseCost;
+	}
+	
+	public void setHouseCost(int houseCost){
+		this.houseCost = houseCost;
+	}
+	
+	public int getHotelCost(){
+		return hotelCost;
+	}
+	
+	public void setHotelCost(int hotelCost){
+		this.hotelCost = hotelCost;
+	}
+	
+	
 	public int getNumHouses(){
 		return numHouses;
+	}
+	
+	public Colors getColor(){
+		return color;
+	}
+	
+	public void setColor(Colors color){
+		this.color = color;
 	}
 	
 	public boolean hasHotel(){
