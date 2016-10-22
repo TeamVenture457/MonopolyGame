@@ -61,6 +61,10 @@ public abstract class Property {
 		description = desc;
 	}
 	
+	public void unmortgage(){
+		isMortgaged = false;
+	}
+	
 	public abstract boolean mortgage();
 	public abstract void generateDescription();
 
