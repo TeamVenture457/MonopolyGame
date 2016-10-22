@@ -56,7 +56,7 @@ public class Street extends Property{
 	}
 	
 	public boolean placeHouse(){
-		if(numHouses < 4){
+		if(numHouses < 4 && hotel == false){
 			numHouses++;
 			return true;
 		}
