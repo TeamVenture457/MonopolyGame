@@ -9,18 +9,24 @@ import org.junit.Test;
 import cs414.a4.monopoly.backEnd.*;
 
 public class RailroadTest {
+	
+	Railroad rail;
+	Bank bank;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws Exception{
+		bank = new Bank();
 	}
 
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() throws Exception{
 	}
-
+	
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void testDescription(){
+		rail = new Railroad("Test", 300, 25, 150, bank);
+		String expectedDesc = "Railroad\n" + "Test\n" + "Price: 300\n" + "Rent: 25\n" + "Mortgage: 150";
+		assertEquals(rail.getDescription(), expectedDesc);
 	}
 
 }

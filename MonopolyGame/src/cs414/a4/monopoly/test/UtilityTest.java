@@ -9,9 +9,13 @@ import org.junit.Test;
 import cs414.a4.monopoly.backEnd.*;
 
 public class UtilityTest {
+	
+	Utility util;
+	Bank bank;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws Exception{
+		Bank bank = new Bank();
 	}
 
 	@After
@@ -19,8 +23,10 @@ public class UtilityTest {
 	}
 
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void testDescription(){
+		util = new Utility("Test", 300, 25, 150, bank);
+		String expectedDesc = "Utility\n" + "Test\n" + "Price: 300\n" + "Rent: 25\n" + "Mortgage: 150";
+		assertEquals(util.getDescription(), expectedDesc);
 	}
 
 }
