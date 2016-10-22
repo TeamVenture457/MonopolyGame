@@ -11,11 +11,11 @@ public abstract class Property {
 	
 	Owner myOwner;
 	
-	public Property(String n, int c, int r, int m, Owner bank) {
-		name = n;
-		cost = c;
-		rent = r;
-		mortgageValue = m;
+	public Property(String name, int cost, int rent, int mortgageValue, Owner bank) {
+		this.name = name;
+		this.cost = cost;
+		this.rent = rent;
+		this.mortgageValue = mortgageValue;
 		isMortgaged = false;
 		myOwner = bank;
 		generateDescription();
