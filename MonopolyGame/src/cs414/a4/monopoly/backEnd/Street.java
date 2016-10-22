@@ -6,8 +6,28 @@ public class Street extends Property{
 	private int hotel;
 	private Colors color;
 	
-	public Street() {
-		// TODO Auto-generated constructor stub
+	public Street(String n, int c, int r, int m){
+		super(n, c, r, m);
+	}
+	
+	public int numHouses(){
+		return houses;
+	}
+	
+	public boolean hasHotel(){
+		return false;
+	}
+	
+	public void mortgage(){
+		
+	}
+	
+	public void placeHouse(){
+		
+	}
+	
+	public void placeHotel(){
+		
 	}
 
 }

@@ -2,8 +2,12 @@ package cs414.a4.monopoly.backEnd;
 
 public class Utility extends Property{
 
-	public Utility() {
-		// TODO Auto-generated constructor stub
+	public Utility(String n, int c, int r, int m){
+		super(n, c, r, m);
+	}
+	
+	public void mortgage(){
+		
 	}
 
 }

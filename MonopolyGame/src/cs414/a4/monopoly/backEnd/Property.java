@@ -8,8 +8,34 @@ public abstract class Property {
 	private int mortgageValue;
 	private boolean isMortgaged;
 	
-	public Property() {
-		// TODO Auto-generated constructor stub
+	public Property(String n, int c, int r, int m) {
+		name = n;
+		cost = c;
+		rent = r;
+		mortgageValue = m;
+		isMortgaged = false;
 	}
+	
+	public String getName(){
+		return name;
+	}
+	
+	public int getCost(){
+		return cost;
+	}
+	
+	public int getRent(){
+		return rent;
+	}
+	
+	public int getMortgageValue(){
+		return mortgageValue;
+	}
+	
+	public boolean isMortgaged(){
+		return isMortgaged;
+	}
+	
+	public abstract void mortgage();
 
 }
