@@ -13,8 +13,7 @@ public class Player extends Owner{
 
 	@Override
 	public void buyHouse(Street street){
-
-
+		Bank.getInstance().buyHouse();
 	}
 
 	@Override

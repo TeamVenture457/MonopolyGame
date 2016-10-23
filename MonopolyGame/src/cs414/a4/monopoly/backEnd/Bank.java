@@ -19,11 +19,6 @@ public class Bank extends Owner{
 		return instance;
 	}
 
-
-
-
-
-
 	@Override
 	public void buyHotel(Property property) {
 		this.inventoryOfHotels++;

@@ -13,7 +13,7 @@ public class SystemMessagesToPlayer {
 
         switch (messageNumber){
             case 0:
-                return "Action Compleated";
+                return "Action Completed";
             case 1:
                 return "Bank out of Hotels";
             case 2:
