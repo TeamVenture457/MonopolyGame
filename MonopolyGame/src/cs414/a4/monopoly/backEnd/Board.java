@@ -32,7 +32,6 @@ public class Board {
 		else{
 			System.out.println("Problem setting up board.");
 		}
-		// TODO Auto-generated constructor stub
 	}
 
 	private Boolean getXMLDoc() {
@@ -198,12 +197,5 @@ public class Board {
 		}
 		return thisColor;
 	}
-	
-	/*
-	public static void main(String[] args) {
-		List<Player> players = new ArrayList<Player>();
-		players.add(new Player("Jameson"));
-		Board myBoard = new Board(players);
-	}
-	*/
+
 }
