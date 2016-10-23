@@ -15,17 +15,16 @@ import org.w3c.dom.NodeList;
 public class Board {
 
 	final int NUMBEROFBOARDSPACES = 41;
-	Space[] boardSpaces;
-	List<Player> players;
-	Bank bank;
-	Document monopolySpacesDoc;
-	String xmlFilename;
+	private Space[] boardSpaces;
+	private List<Player> players;
+	private Bank bank;
+	private Document monopolySpacesDoc;
+	private String xmlFilename;
 	
 	public Board(List<Player> players) {
 		xmlFilename = "monopolySpaces.xml";
 		this.players = players;
 		bank = Bank.getInstance();
-		//bank = Bank.getInstance();
 		if(this.getXMLDoc()){
 			boardSpaces = new Space[NUMBEROFBOARDSPACES];
 			this.fillBoardSpaces();
@@ -33,7 +32,6 @@ public class Board {
 		else{
 			System.out.println("Problem setting up board.");
 		}
-		// TODO Auto-generated constructor stub
 	}
 
 	private Boolean getXMLDoc() {
@@ -115,7 +113,7 @@ public class Board {
 			}
 			if (thisSpace instanceof Space) {
 				boardSpaces[thisSpace.getRank()] = thisSpace;
-				//System.out.println(boardSpaces[thisSpace.getRank()].getSpaceDescription());
+				System.out.println(boardSpaces[thisSpace.getRank()].getSpaceDescription());
 			}
 		}
 	}
@@ -199,12 +197,5 @@ public class Board {
 		}
 		return thisColor;
 	}
-	
-	/*
-	public static void main(String[] args) {
-		List<Player> players = new ArrayList<Player>();
-		players.add(new Player("Jameson"));
-		Board myBoard = new Board(players);
-	}
-	*/
+
 }
