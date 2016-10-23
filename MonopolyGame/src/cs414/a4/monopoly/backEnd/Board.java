@@ -25,7 +25,6 @@ public class Board {
 		xmlFilename = "monopolySpaces.xml";
 		this.players = players;
 		bank = Bank.getInstance();
-		//bank = Bank.getInstance();
 		if(this.getXMLDoc()){
 			boardSpaces = new Space[NUMBEROFBOARDSPACES];
 			this.fillBoardSpaces();
