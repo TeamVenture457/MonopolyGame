@@ -15,11 +15,11 @@ import org.w3c.dom.NodeList;
 public class Board {
 
 	final int NUMBEROFBOARDSPACES = 41;
-	Space[] boardSpaces;
-	List<Player> players;
-	Bank bank;
-	Document monopolySpacesDoc;
-	String xmlFilename;
+	private Space[] boardSpaces;
+	private List<Player> players;
+	private Bank bank;
+	private Document monopolySpacesDoc;
+	private String xmlFilename;
 	
 	public Board(List<Player> players) {
 		xmlFilename = "monopolySpaces.xml";
@@ -115,7 +115,7 @@ public class Board {
 			}
 			if (thisSpace instanceof Space) {
 				boardSpaces[thisSpace.getRank()] = thisSpace;
-				//System.out.println(boardSpaces[thisSpace.getRank()].getSpaceDescription());
+				System.out.println(boardSpaces[thisSpace.getRank()].getSpaceDescription());
 			}
 		}
 	}
