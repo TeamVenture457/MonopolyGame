@@ -7,8 +7,11 @@ public class Railroad extends Property{
 	}
 	
 	public boolean mortgage(){
-		setIsMortgaged(true);
-		return true;
+		if(isMortgaged() == false) {
+			setIsMortgaged(true);
+			return true;
+		}
+		return false;
 	}
 	
 	public void generateDescription(){
