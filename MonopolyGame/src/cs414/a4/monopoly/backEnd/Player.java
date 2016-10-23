@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Player extends Owner{
 
 
-	private String name;
+	protected String name;
 	private String token;
 	private int location;
 	private boolean isInJail;

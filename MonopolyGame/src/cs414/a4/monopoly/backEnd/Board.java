@@ -1,6 +1,8 @@
 package cs414.a4.monopoly.backEnd;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -14,15 +16,16 @@ public class Board {
 
 	final int NUMBEROFBOARDSPACES = 41;
 	Space[] boardSpaces;
-	Player [] players;
+	List<Player> players;
 	Bank bank;
 	Document monopolySpacesDoc;
 	String xmlFilename;
 	
-	public Board(Player [] players) {
+	public Board(List<Player> players) {
 		xmlFilename = "monopolySpaces.xml";
 		this.players = players;
-		bank = new Bank();
+		bank = Bank.getInstance();
+		//bank = Bank.getInstance();
 		if(this.getXMLDoc()){
 			boardSpaces = new Space[NUMBEROFBOARDSPACES];
 			this.fillBoardSpaces();
@@ -87,7 +90,7 @@ public class Board {
 						int houseCost = Integer.parseInt(houseCostString);						
 						String hotelCostString = eElement.getElementsByTagName("hotelcost").item(0).getTextContent();
 						int hotelCost = Integer.parseInt(hotelCostString);
-						Street thisStreet = new Street(name, cost, rent, mortgageValue, bank);
+						Street thisStreet = new Street(name, cost, rent, mortgageValue);
 						thisStreet.setColor(thisColor);
 						thisStreet.setHouseRents(rent1House, rent2House, rent3House, rent4House, rentHotel);
 						thisStreet.setHouseCost(houseCost);
@@ -95,11 +98,11 @@ public class Board {
 						thisSpace = new Space(name, thisSpaceType, rank, thisStreet);
 						break;
 					case "railroad":
-						Railroad thisRailroad = new Railroad(name, cost, rent, mortgageValue, bank);
+						Railroad thisRailroad = new Railroad(name, cost, rent, mortgageValue);
 						thisSpace = new Space(name, thisSpaceType, rank, thisRailroad);
 						break;
 					case "utility":
-						Utility thisUtility = new Utility(name, cost, rent, mortgageValue, bank);
+						Utility thisUtility = new Utility(name, cost, rent, mortgageValue);
 						thisSpace = new Space(name, thisSpaceType, rank, thisUtility);
 						break;
 					default:
@@ -112,7 +115,7 @@ public class Board {
 			}
 			if (thisSpace instanceof Space) {
 				boardSpaces[thisSpace.getRank()] = thisSpace;
-				System.out.println(boardSpaces[thisSpace.getRank()].getSpaceDescription());
+				//System.out.println(boardSpaces[thisSpace.getRank()].getSpaceDescription());
 			}
 		}
 	}
@@ -197,9 +200,11 @@ public class Board {
 		return thisColor;
 	}
 	
+	/*
 	public static void main(String[] args) {
-		Player [] players = new Player[1];
-		players[0] = new Player();
+		List<Player> players = new ArrayList<Player>();
+		players.add(new Player("Jameson"));
 		Board myBoard = new Board(players);
 	}
+	*/
 }
