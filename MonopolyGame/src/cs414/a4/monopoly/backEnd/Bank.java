@@ -4,7 +4,6 @@ public class Bank extends Owner{
 
 	private int inventoryOfHouses;
 	private int inventoryOfHotels;
-
 	boolean hotelsInStock;
 	boolean housesInStock;
 
@@ -19,70 +18,73 @@ public class Bank extends Owner{
 		return instance;
 	}
 
-	@Override
-	public void buyHotel(Property property) {
-		this.inventoryOfHotels++;
-		this.hotelInventoryCheck();
-	}
-
-	@Override
-	public void buyHouse(Property property) {
+	public void addHouseToBank() {
 		this.inventoryOfHouses++;
 		this.houseInventoryCheck();
 	}
 
-	@Override
-	public Property buyProperty(Property property) {
-		this.propertiesOwned.add(property);
-		property.setOwner(this);
-		return property;
+	public boolean removeHouseFromBank(){
+		houseInventoryCheck();
+		if(housesInStock) {
+			this.inventoryOfHouses--;
+			houseInventoryCheck();
+			return true;
+		}else{
+			SystemMessagesToPlayer.getSystemMessage(1);
+			return false;
+		}
 	}
 
-	@Override
-	public void sellHotels(Property property) {
+	public void addHotelToBank() {
+			this.inventoryOfHotels++;
+			hotelInventoryCheck();
+	}
+
+	public boolean removeHotelFromBank() {
+		hotelInventoryCheck();
 		if(hotelsInStock) {
 			this.inventoryOfHotels--;
 			hotelInventoryCheck();
 		}else{
 			SystemMessagesToPlayer.getSystemMessage(1);
+			return false;
 		}
+		return true;
 	}
 
-	@Override
-	public void sellHouse(Property property) {
-		if(housesInStock) {
-			this.inventoryOfHouses--;
-			houseInventoryCheck();
-		}else{
-			SystemMessagesToPlayer.getSystemMessage(2);
-		}
+	public void addProperty(Property property){
+		this.propertiesOwned.add(property);
 	}
 
-	@Override
-	public Property sellProperty(Property property) {
+	public Property removeProperty(Property property) {
 		if(this.propertiesOwned.contains(property)){
 			this.propertiesOwned.remove(property);
 			return property;
+		}else {
+			SystemMessagesToPlayer.getSystemMessage(3);
+		} return null;
+	}
+
+	public boolean mortgage(Property property) {
+		boolean mortgageSuccessfull;
+		mortgageSuccessfull = property.mortgage();
+		if(mortgageSuccessfull==false){
+			SystemMessagesToPlayer.getSystemMessage(5);
+			return mortgageSuccessfull;
 		}
-		SystemMessagesToPlayer.getSystemMessage(3);
-		return null;
+		return mortgageSuccessfull;
 	}
 
-	@Override
-	public void morgage(Property property) {
-
-	}
-
-	public int getInventoryHotels() {
+	public int getInventoryOfHotels() {
 		return inventoryOfHotels;
 	}
 
-	public int getInventoryHouses() {
+	public int getInventoryOfHouses() {
 		return inventoryOfHouses;
 	}
 
 	private void hotelInventoryCheck(){
-		if(this.getInventoryHotels()==0){
+		if(this.getInventoryOfHotels()==0){
 			this.hotelsInStock=false;
 		}else{
 			this.hotelsInStock=true;
@@ -90,16 +92,11 @@ public class Bank extends Owner{
 	}
 
 	private void houseInventoryCheck(){
-		if(this.getInventoryHouses()==0){
+		if(this.getInventoryOfHouses()==0){
 			this.housesInStock=false;
 		}else{
 			this.housesInStock=true;
 		}
 	}
-
-	public void addProperty(Property property){
-		this.propertiesOwned.add(property);
-	}
-
 
 }
