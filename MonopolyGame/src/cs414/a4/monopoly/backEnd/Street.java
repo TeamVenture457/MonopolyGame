@@ -13,8 +13,8 @@ public class Street extends Property{
 	private int houseCost;
 	private int hotelCost;
 
-	public Street(String name, int cost, int rent, int mortgageValue, Owner bank){
-		super(name, cost, rent, mortgageValue, bank);
+	public Street(String name, int cost, int rent, int mortgageValue){
+		super(name, cost, rent, mortgageValue);
 		numHouses = 0;
 		hotel = false;
 	}
