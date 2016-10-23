@@ -4,17 +4,49 @@ import java.util.Calendar;
 import java.util.Random;
 import java.util.TimeZone;
 
+/**
+ * Created by TatroIII on 10/21/2016.
+ */
 public class Dice {
-	private Random r;
 
-	public Dice() {
-		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+	private int die1;
+	private int die2;
+	private Random random;
+	private Calendar calendar;
+	long seconds;
+	Random randomInt;
+
+	public Dice(){
+		this.calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 		long seconds = calendar.getTimeInMillis() / 1000L;
-		r = new Random(seconds);
+		random = new Random(seconds);
 	}
-	
-	public int rollDie(){
-		int die = r.nextInt(6)+1;
-		return die;
+
+	private int rollADie(){
+		return random.nextInt(6)+1;
+	}
+
+	public int roleDice(){
+		die1=rollADie();
+		die2=rollADie();
+		return die1+die2;
+	}
+
+	public boolean rolledDouble(){
+
+		boolean toReturn;
+		toReturn = false;
+		if(die1==die2){
+			toReturn = true;
+		}
+		return toReturn;
+	}
+
+	public int getDie1() {
+		return die1;
+	}
+
+	public int getDie2() {
+		return die2;
 	}
 }
