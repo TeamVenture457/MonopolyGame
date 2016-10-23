@@ -2,8 +2,8 @@ package cs414.a4.monopoly.backEnd;
 
 public class Utility extends Property{
 
-	public Utility(String name, int cost, int rent, int mortgageValue, Owner bank){
-		super(name, cost, rent, mortgageValue, bank);
+	public Utility(String name, int cost, int rent, int mortgageValue){
+		super(name, cost, rent, mortgageValue);
 	}
 	
 	public boolean mortgage(){
