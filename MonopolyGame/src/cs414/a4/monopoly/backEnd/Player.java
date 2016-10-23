@@ -156,6 +156,10 @@ public class Player extends Owner{
 	public void setToken(String token){
 		this.token = token;
 	}
+	
+	public void setLocation(int location){
+		this.location = location;
+	}
 
 	public int getLocation(){
 		return this.location;
