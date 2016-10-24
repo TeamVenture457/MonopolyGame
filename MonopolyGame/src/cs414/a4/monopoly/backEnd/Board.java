@@ -20,10 +20,12 @@ public class Board {
 	private Bank bank;
 	private Document monopolySpacesDoc;
 	private String xmlFilename;
+	private Dice gameDice;
 	
 	public Board(List<Player> players) {
 		xmlFilename = "monopolySpaces.xml";
 		this.players = players;
+		gameDice = new Dice();
 		bank = Bank.getInstance();
 		bank.propertiesOwned = new ArrayList<Property>();
 		if(this.getXMLDoc()){
@@ -34,14 +36,15 @@ public class Board {
 			System.out.println("Problem setting up board.");
 		}
 	}
-
-	public void playGame(){
-		int currentPlayer = 0;
-		while(players.size() > 1){
-			
-		}
+	
+	public Space [] getBoardSpaces(){
+		return boardSpaces;
 	}
 	
+	public List<Player> getPlayers(){
+		return players;
+	}
+
 	private Boolean getXMLDoc() {
 		try {
 			File xmlFile = new File("MonopolyGame/src/resources/" + xmlFilename);
