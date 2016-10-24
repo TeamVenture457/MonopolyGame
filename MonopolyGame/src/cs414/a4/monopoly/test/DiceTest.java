@@ -28,7 +28,8 @@ public class DiceTest {
 	@Test
 	public void diceValues1to6Test() {
 		for(int i = 0; i < 100; i++){
-			die = d1.rollDie();
+			d1.rollDice();
+			die = d1.getDie1();
 			if(die < 1 || die > 6){
 				result = false;
 			}

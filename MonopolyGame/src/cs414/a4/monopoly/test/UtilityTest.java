@@ -15,7 +15,7 @@ public class UtilityTest {
 
 	@Before
 	public void setUp() throws Exception{
-		Bank bank = new Bank();
+		Bank bank = Bank.getInstance();
 	}
 
 	@After
@@ -24,7 +24,7 @@ public class UtilityTest {
 
 	@Test
 	public void testDescription(){
-		util = new Utility("Test", 300, 25, 150, bank);
+		util = new Utility("Test", 300, 25, 150);
 		String expectedDesc = "Utility\n" + "Test\n" + "Price: 300\n" + "Rent: 25\n" + "Mortgage: 150";
 		assertEquals(util.getDescription(), expectedDesc);
 	}

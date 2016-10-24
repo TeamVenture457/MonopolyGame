@@ -26,7 +26,7 @@ public class Dice {
 		return random.nextInt(6)+1;
 	}
 
-	public int roleDice(){
+	public int rollDice(){
 		die1=rollADie();
 		die2=rollADie();
 		return die1+die2;

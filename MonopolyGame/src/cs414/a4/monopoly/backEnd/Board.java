@@ -20,11 +20,14 @@ public class Board {
 	private Bank bank;
 	private Document monopolySpacesDoc;
 	private String xmlFilename;
+	private Dice gameDice;
 	
 	public Board(List<Player> players) {
 		xmlFilename = "monopolySpaces.xml";
 		this.players = players;
+		gameDice = new Dice();
 		bank = Bank.getInstance();
+		bank.propertiesOwned = new ArrayList<Property>();
 		if(this.getXMLDoc()){
 			boardSpaces = new Space[NUMBEROFBOARDSPACES];
 			this.fillBoardSpaces();
@@ -32,6 +35,14 @@ public class Board {
 		else{
 			System.out.println("Problem setting up board.");
 		}
+	}
+	
+	public Space [] getBoardSpaces(){
+		return boardSpaces;
+	}
+	
+	public List<Player> getPlayers(){
+		return players;
 	}
 
 	private Boolean getXMLDoc() {
@@ -94,14 +105,17 @@ public class Board {
 						thisStreet.setHouseCost(houseCost);
 						thisStreet.setHotelCost(hotelCost);
 						thisSpace = new Space(name, thisSpaceType, rank, thisStreet);
+						bank.propertiesOwned.add(thisStreet);
 						break;
 					case "railroad":
 						Railroad thisRailroad = new Railroad(name, cost, rent, mortgageValue);
 						thisSpace = new Space(name, thisSpaceType, rank, thisRailroad);
+						bank.propertiesOwned.add(thisRailroad);
 						break;
 					case "utility":
 						Utility thisUtility = new Utility(name, cost, rent, mortgageValue);
 						thisSpace = new Space(name, thisSpaceType, rank, thisUtility);
+						bank.propertiesOwned.add(thisUtility);
 						break;
 					default:
 						System.out.println("Unexpected property type " + type + " given by space " + name + ".");
@@ -113,9 +127,10 @@ public class Board {
 			}
 			if (thisSpace instanceof Space) {
 				boardSpaces[thisSpace.getRank()] = thisSpace;
-				System.out.println(boardSpaces[thisSpace.getRank()].getSpaceDescription());
+				//System.out.println(boardSpaces[thisSpace.getRank()].getSpaceDescription());
 			}
 		}
+		//System.out.println("Bank property list size: " + bank.propertiesOwned.size());
 	}
 
 	private SpaceType getSpaceType(String type, String spaceName) {

@@ -12,6 +12,7 @@ public class Player extends Owner{
 	private boolean isInJail;
 	private int money;
 	private Bank bank;
+	private int turnsInJail;
 
 	public Player(String name) {
 		this.name = name;
@@ -19,7 +20,12 @@ public class Player extends Owner{
 		this.money = 1500;
 		this.location = 0;
 		this.isInJail = false;
+		turnsInJail = 0;
 		propertiesOwned = new ArrayList<Property>();
+	}
+	
+	public boolean isInJail(){
+		return isInJail;
 	}
 
 	public void buyHouse(Street street){
@@ -155,6 +161,10 @@ public class Player extends Owner{
 
 	public void setToken(String token){
 		this.token = token;
+	}
+	
+	public void setLocation(int location){
+		this.location = location;
 	}
 
 	public int getLocation(){
