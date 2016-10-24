@@ -21,6 +21,10 @@ public class Player extends Owner{
 		this.isInJail = false;
 		propertiesOwned = new ArrayList<Property>();
 	}
+	
+	public boolean isPlayerInJail(){
+		return isInJail;
+	}
 
 	public void buyHouse(Street street){
 		if(bank.removeHouseFromBank()) {
