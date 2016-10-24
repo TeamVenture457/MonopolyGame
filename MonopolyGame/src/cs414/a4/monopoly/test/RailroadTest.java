@@ -15,7 +15,7 @@ public class RailroadTest {
 
 	@Before
 	public void setUp() throws Exception{
-		bank = new Bank();
+		bank = Bank.getInstance();
 	}
 
 	@After
@@ -24,7 +24,7 @@ public class RailroadTest {
 	
 	@Test
 	public void testDescription(){
-		rail = new Railroad("Test", 300, 25, 150, bank);
+		rail = new Railroad("Test", 300, 25, 150);
 		String expectedDesc = "Railroad\n" + "Test\n" + "Price: 300\n" + "Rent: 25\n" + "Mortgage: 150";
 		assertEquals(rail.getDescription(), expectedDesc);
 	}
