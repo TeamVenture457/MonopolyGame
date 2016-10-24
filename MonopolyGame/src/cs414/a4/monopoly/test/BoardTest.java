@@ -14,11 +14,6 @@ public class BoardTest {
 	@Before
 	public void setUp() throws Exception {
 		testPlayers = new Player[4];
-		testPlayers[0] = new Player();
-		testPlayers[1] = new Player();
-		testPlayers[2] = new Player();
-		testPlayers[3] = new Player();
-		Board testBoard = new Board(testPlayers);
 	}
 
 	@After
@@ -32,7 +27,7 @@ public class BoardTest {
 	
 	@Test
 	public void testGetXMLDocGoodFilename() {
-		
+		fail("Not yet implemented");		
 	}
 	
 	@Test
