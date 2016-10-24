@@ -24,7 +24,7 @@ public class Player extends Owner{
 		propertiesOwned = new ArrayList<Property>();
 	}
 	
-	public boolean isPlayerInJail(){
+	public boolean isInJail(){
 		return isInJail;
 	}
 
