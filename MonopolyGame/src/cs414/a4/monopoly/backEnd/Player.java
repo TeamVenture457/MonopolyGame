@@ -12,6 +12,7 @@ public class Player extends Owner{
 	private boolean isInJail;
 	private int money;
 	private Bank bank;
+	private int turnsInJail;
 
 	public Player(String name) {
 		this.name = name;
@@ -19,6 +20,7 @@ public class Player extends Owner{
 		this.money = 1500;
 		this.location = 0;
 		this.isInJail = false;
+		turnsInJail = 0;
 		propertiesOwned = new ArrayList<Property>();
 	}
 	
