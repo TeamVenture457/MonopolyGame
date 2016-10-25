@@ -161,6 +161,35 @@ public class Board {
 		//System.out.println("Bank property list size: " + bank.propertiesOwned.size());
 	}
 
+	//this method finds the number of railroads owned
+	//number of utilities owned
+	//number of streets of street color owned
+	//it just returns the number 
+	public int propertiesOwnedOfType(Property property){
+		Owner owner = property.getOwner();
+		List<Object> propertiesOwned = new ArrayList<Object>();
+		for(Property deed : owner.propertiesOwned){
+			if(property instanceof Railroad){
+				if(deed instanceof Railroad){
+					propertiesOwned.add(deed);
+				}
+			}
+			else if(property instanceof Street){
+				if(deed instanceof Street){
+					if(((Street) property).getColor().equals(((Street) deed).getColor())){
+						propertiesOwned.add(deed);
+					}
+				}
+			}
+			else{
+				if(deed instanceof Utility){
+					propertiesOwned.add(deed);
+				}
+			}
+		}
+		return propertiesOwned.size();
+	}
+	
 	private SpaceType getSpaceType(String type, String spaceName) {
 		SpaceType thisSpaceType = null;
 		switch (type) {
