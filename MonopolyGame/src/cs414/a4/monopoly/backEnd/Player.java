@@ -12,7 +12,7 @@ public class Player extends Owner{
 	private boolean isInJail;
 	private int money;
 	private Bank bank;
-	private int turnsInJail;
+	protected int turnsInJail;
 
 	public Player(String name) {
 		this.name = name;
