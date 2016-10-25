@@ -169,18 +169,19 @@ public class Board {
 		Owner owner = property.getOwner();
 		List<Object> propertiesOwned = new ArrayList<Object>();
 		for(Property deed : owner.propertiesOwned){
-			if(property instanceof Railroad){
-				if(deed instanceof Railroad){
-					propertiesOwned.add(deed);
-				}
-			}
-			else if(property instanceof Street){
+			if(property instanceof Street){
 				if(deed instanceof Street){
 					if(((Street) property).getColor().equals(((Street) deed).getColor())){
 						propertiesOwned.add(deed);
 					}
 				}
 			}
+			else if(property instanceof Railroad){
+				if(deed instanceof Railroad){
+					propertiesOwned.add(deed);
+				}
+			}
+			
 			else{
 				if(deed instanceof Utility){
 					propertiesOwned.add(deed);
