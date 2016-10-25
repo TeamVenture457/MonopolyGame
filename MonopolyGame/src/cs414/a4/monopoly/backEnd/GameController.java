@@ -40,6 +40,7 @@ public class GameController {
 
 	private Player movePlayer(Player player) {
 		Property deed = null;
+		boolean playerTakesAnotherTurn = false;
 		Player nextPlayer = board.getNextPlayer(player);
 		// give view player name and player location on board
 		view.loadPlayerInfo(player.getName(), player.getLocation(), player.getMoney(), player.getIsInJail());
@@ -85,13 +86,13 @@ public class GameController {
 		}
 		// player isn't in jail
 		else {
-
 			if (rolledDouble) {
 				player.consecutiveTurns++;
 				if (player.consecutiveTurns == 3) {
 					player.putInJail();
 					player.consecutiveTurns = 0;
 				} else {
+					playerTakesAnotherTurn = true;
 					deed = board.movePlayer(player, diceRoll);
 				}
 			} else {
@@ -111,6 +112,12 @@ public class GameController {
 					}
 					else{
 						view.playerCannotBuy("Not enough money.");
+						Player winningPlayer = auctionProperty(deed, nextPlayer);
+						if(!winningPlayer.equals(null)){
+							if(winningPlayer.equals(player)){
+								view.updatePlayerMoney(player.getMoney());
+							}
+						}
 					}
 				}
 				else{
@@ -122,12 +129,41 @@ public class GameController {
 					}
 				}
 			}
+			//if deed is owned by another player
+			else if(!deed.getOwner().equals(player)){
+				//calculate rent
+				Owner owner = deed.getOwner();
+				int numOwned = 0;
+				if(deed instanceof Street){
+					if(((Street) deed).hasHotel()){
+						numOwned = 5;
+					}
+					else{
+						numOwned = ((Street) deed).getNumHouses();
+					}
+				}
+				else{
+					numOwned = board.propertiesOwnedOfType(deed);
+				}
+
+				int rent = deed.calculateRent(numOwned);
+				
+				//see if player can pay rent
+				
+				//if they can, pay it
+				//if they can't, see if they can sell or mortgage to get it
+				//if they can't, remove them from the game
+			}
 		} else {
 			//find out what space player is on and take action accordingly
+			//if Go, Free Parking, Just Visiting, Community Chest, or Chance
+			//then do nothing (they already got $200 from landing on go)
+			//if Income or Luxury tax then try to pay
+			//if Go To Jail then put player in Jail
 			
 		}
 
-		if(rolledDouble && !player.getIsInJail()){
+		if(playerTakesAnotherTurn){
 			nextPlayer = player;
 		}
 		return nextPlayer;
