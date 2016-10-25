@@ -132,4 +132,33 @@ public class Street extends Property{
 		setDescription(temp);
 	}
 
+	@Override
+	public int calculateRent(int owned) {
+		int rent = 0;
+		// TODO Auto-generated method stub
+		switch (owned){
+		case 0:
+			rent = getRent();
+			break;
+		case 1:
+			rent = rent1House;
+			break;
+		case 2:
+			rent = rent2House;
+			break;
+		case 3:
+			rent = rent3House;
+			break;
+		case 4:
+			rent = rent4House;
+			break;
+		case 5:
+			rent = rentHotel;
+			break;
+			default:
+				System.out.println("Unexpected number of houses on a street.");
+		}
+		return rent;
+	}
+
 }
