@@ -67,6 +67,7 @@ public abstract class Property {
 		isMortgaged = false;
 	}
 	
+	public abstract int calculateRent(int owned);
 	public abstract boolean mortgage();
 	public abstract void generateDescription();
 
