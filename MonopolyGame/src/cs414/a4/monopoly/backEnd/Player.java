@@ -182,4 +182,14 @@ public class Player extends Owner{
 
 	}
 
+	@Override
+	public boolean equals(Object other){
+		if(other instanceof Player){
+			Player otherPlayer = (Player) other;
+			return this.name.equals(otherPlayer.getName());
+		}
+
+		return false;
+	}
+
 }
