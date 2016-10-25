@@ -23,4 +23,10 @@ public class Railroad extends Property{
 		setDescription(temp);
 	}
 
+	@Override
+	public int calculateRent(int owned) {
+		// TODO Auto-generated method stub
+		return 2^owned * getRent();
+	}
+
 }
