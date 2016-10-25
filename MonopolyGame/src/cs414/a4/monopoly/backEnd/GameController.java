@@ -6,18 +6,33 @@ import cs414.a4.monopoly.frontEnd.*;
 
 public class GameController {
 
+	private ViewController view;
 	private Game game;
 	private Board board;
 	private List<Player> players;
 	private Bank bank;
 	
-	public GameController(List<String> playerNames) {
-		game = new Game(playerNames);
+	public GameController() {
+		view = new ViewController();
+		game = new Game(view.getPlayerNames());
 		board = game.setup();
 		players = game.getPlayers();
+		setPlayerTokens(view.getPlayerTokens(getPlayerNames()));
 		bank = Bank.getInstance();
 	}
 	
+	public void playMonopolyGame(){
+		Player currentPlayer = players.get(0);
+		while(players.size() > 1){
+			currentPlayer = takeTurn(currentPlayer);
+		}
+	}
+	
+	private Player takeTurn(Player currentPlayer) {
+		
+		return null;
+	}
+
 	public void printPlayerInfo(){
 		for(Player player : players){
 			System.out.println("Player: " + player.getName() + "\nToken: " + 
@@ -36,16 +51,8 @@ public class GameController {
 	}
 	
 	public static void main(String [] args){
-		//Create view and get names from view
-		ViewController view = new ViewController();
-		List<String> playerNames = view.getPlayerNames();
 		
-		GameController gameController = new GameController(playerNames);
-		playerNames = gameController.getPlayerNames();
-		
-		//send player names back to view for players to choose tokens in order
-		List<String> playerTokens = view.getPlayerTokens(playerNames);
-		gameController.setPlayerTokens(playerTokens);
+		GameController gameController = new GameController();
 		
 		gameController.printPlayerInfo();
 		
