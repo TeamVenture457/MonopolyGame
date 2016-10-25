@@ -28,5 +28,50 @@ public class ViewController {
 		tokens.add("iron");
 		return tokens;
 	}
+
+	public void loadPlayerInfo(String name, int location, int money, boolean isInJail) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String getLeaveJailChoice() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void setDiceRoll(int diceRoll, boolean rolledDouble, int die1, int die2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void updatePlayerMoney(int money) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void updatePlayerLocation(int location) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String getPlayerBuyChoice(String playerName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void playerCannotBuy(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public int getPlayerBid(String name, int money, String nameOfPlayerWithHighBid, int highestBid) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public void tellPlayerTheyWonBid(String playerName, int playerMoney, String deedName, int highestBid) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
