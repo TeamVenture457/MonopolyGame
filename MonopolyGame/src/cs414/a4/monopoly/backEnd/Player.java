@@ -34,6 +34,11 @@ public class Player extends Owner{
 		}
 		location = nextLocation;
 	}
+	
+	public void payRent(Player owner, int amount){
+		this.removeMoney(amount);
+		owner.addMoney(amount);
+	}
 
 	public void buyHouse(Street street){
 		if(bank.removeHouseFromBank()) {
