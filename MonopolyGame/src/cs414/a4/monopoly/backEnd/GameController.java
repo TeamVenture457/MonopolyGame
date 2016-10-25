@@ -34,10 +34,15 @@ public class GameController {
 	}
 
 	private void finishTurn(Player currentPlayer) {
-		// TODO Auto-generated method stub
-
+		//get player choices for rest of turn
+		//until player chooses to end turn keep going
 	}
 
+	//this method is used to begin the turn and allows the player to move
+	//if in jail, player chooses to roll or pay
+	//if 3rd turn rolling and no doubles then they have to pay.
+	//if not in jail move player as normal
+	//after player is moved, check space for action
 	private Player movePlayer(Player player) {
 		Property deed = null;
 		boolean playerTakesAnotherTurn = false;
@@ -149,24 +154,103 @@ public class GameController {
 				int rent = deed.calculateRent(numOwned);
 				
 				//see if player can pay rent
-				
-				//if they can, pay it
+				if(player.getMoney() > rent){
+					player.payRent(((Player)deed.getOwner()), rent);
+				}
 				//if they can't, see if they can sell or mortgage to get it
-				//if they can't, remove them from the game
+				else{
+					if(player.propertiesOwned.size() > 0){
+						//player can choose to sell or mortgage a property
+						//sell buildings on a property
+						//they can also choose to quit the game
+						String response = view.askPlayerHowToPayBill(rent);
+						switch(response){
+						case "sell property":
+							
+							break;
+						case "mortgage":
+
+							break;
+						case "sell house":
+
+							break;
+						case "sell hotel":
+
+							break;
+						case "quit game":
+
+							break;
+						default:
+								System.out.println("Unexpected way to pay rent.");
+						}
+					}
+					else{
+						//remove player from the game
+					}
+				}
 			}
 		} else {
-			//find out what space player is on and take action accordingly
-			//if Go, Free Parking, Just Visiting, Community Chest, or Chance
-			//then do nothing (they already got $200 from landing on go)
-			//if Income or Luxury tax then try to pay
-			//if Go To Jail then put player in Jail
-			
+			int spaceLoc = player.getLocation();
+			int tax = 0;
+			Space space = board.getBoardSpaces()[spaceLoc];
+			switch (space.getName()){
+			case "Income Tax":
+				tax = 200;
+				payTax(player, tax);
+				break;
+			case "Luxury Tax":
+				tax = 100;
+				payTax(player, tax);
+				break;
+			case "Go To Jail":
+				player.putInJail();
+				view.updatePlayerLocation(spaceLoc);
+				break;
+				default:
+					//do nothing
+					break;
+			}			
 		}
 
 		if(playerTakesAnotherTurn){
 			nextPlayer = player;
 		}
 		return nextPlayer;
+	}
+
+	private void payTax(Player player, int tax) {
+		if(player.getMoney() > tax){
+			player.removeMoney(tax);
+		}
+		else if(player.propertiesOwned.size() > 0){
+			//player can choose to sell or mortgage a property
+			//sell buildings on a property
+			//they can also choose to quit the game
+			String response = view.askPlayerHowToPayBill(tax);
+			switch(response){
+			case "sell property":
+				
+				break;
+			case "mortgage":
+				
+				break;
+			case "sell house":
+				
+				break;
+			case "sell hotel":
+				
+				break;
+			case "quit game":
+				
+				break;
+				default:
+					System.out.println("Unexpected way to pay rent.");
+			}
+		}
+		else{
+			//remove player from game
+		}
+		
 	}
 
 	//returns player with highest bid or null if no player bids
