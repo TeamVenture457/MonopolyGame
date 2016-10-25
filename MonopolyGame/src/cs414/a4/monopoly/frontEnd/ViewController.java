@@ -73,5 +73,15 @@ public class ViewController {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public String askPlayerToSellToPayRent(int rent) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String askPlayerHowToPayBill(int tax) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }
