@@ -86,7 +86,7 @@ public class ViewController {
 
 	//return an array of strings 
 	// details = {property, buyer, price}
-	public String[] askPlayerWhatPropertyToWhoHowMuch(String name, List<String> playerDeeds) {
+	public String[] askPlayerWhatPropertyToWhoHowMuch(String name, List<String> playerDeeds, List<String> otherPlayerNames) {
 		String [] details = new String[3];
 		// TODO Auto-generated method stub
 		return null;
@@ -103,6 +103,22 @@ public class ViewController {
 	public void tellPlayerNoSale(String playerName, String[] details) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	//get players choice of property to mortgage from list of property names
+	public String getPropertyToMortgage(String name, List<String> propertiesCanMortgage) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void tellPlayerAllPropertiesMortgaged() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String getPlayerSellPropertyWithBuildingChoice(String propertyToMortgage) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
