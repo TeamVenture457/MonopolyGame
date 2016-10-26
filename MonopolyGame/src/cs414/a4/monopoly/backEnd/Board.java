@@ -50,20 +50,6 @@ public class Board {
 		return boardSpaces[player.getLocation()].getDeed();
 	}
 	
-	public void sellPropertyFromBankToPlayer(Property deed, Player player){
-		player.propertiesOwned.add(deed);
-		player.removeMoney(deed.getCost());
-		deed.setOwner(player);
-		bank.propertiesOwned.remove(deed);
-	}
-
-	public void auctionPropertyFromBankToPlayer(Player player, Property deed, int highestBid) {
-		player.propertiesOwned.add(deed);
-		player.removeMoney(highestBid);
-		deed.setOwner(player);
-		bank.propertiesOwned.remove(deed);
-	}
-	
 	public Player getNextPlayer(Player currentPlayer) {
 		int nextPlayerIndex = (players.indexOf(currentPlayer) + 1) % players.size();
 		return players.get(nextPlayerIndex);
