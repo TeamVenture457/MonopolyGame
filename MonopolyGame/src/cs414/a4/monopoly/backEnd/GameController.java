@@ -168,6 +168,7 @@ public class GameController {
 					}
 					else{
 						//remove player from game
+						removePlayerFromGame(player);
 						
 					}
 				}
@@ -249,6 +250,7 @@ public class GameController {
 				break;
 			case "quit game":
 				//remove player from game
+				removePlayerFromGame(player);
 
 				break;
 			default:
@@ -257,6 +259,7 @@ public class GameController {
 		}
 		if(player.getMoney() < amount){
 			//remove player from game
+			removePlayerFromGame(player);
 		}
 	}
 
@@ -271,6 +274,7 @@ public class GameController {
 			}
 			else{
 				//remove player
+				removePlayerFromGame(player);
 			}
 		}		
 	}
@@ -328,6 +332,22 @@ public class GameController {
 
 	public List<String> getPlayerNames() {
 		return game.getPlayerNamesInOrder();
+	}
+	
+	private void removePlayerFromGame(Player player){
+		players.remove(player);
+		for(Property deed : player.propertiesOwned){
+			if(deed instanceof Street){
+				while(((Street) deed).getNumHouses() > 0){
+					((Street) deed).removeHouse();
+				}
+				while(((Street) deed).hasHotel()){
+					((Street) deed).removeHotel();
+				}
+			}
+			player.removeProperty(deed);
+			bank.addProperty(deed);
+		}
 	}
 
 	public static void main(String[] args) {
