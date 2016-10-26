@@ -34,15 +34,15 @@ public class GameController {
 	}
 
 	private void finishTurn(Player currentPlayer) {
-		//get player choices for rest of turn
-		//until player chooses to end turn keep going
+		// get player choices for rest of turn
+		// until player chooses to end turn keep going
 	}
 
-	//this method is used to begin the turn and allows the player to move
-	//if in jail, player chooses to roll or pay
-	//if 3rd turn rolling and no doubles then they have to pay.
-	//if not in jail move player as normal
-	//after player is moved, check space for action
+	// this method is used to begin the turn and allows the player to move
+	// if in jail, player chooses to roll or pay
+	// if 3rd turn rolling and no doubles then they have to pay.
+	// if not in jail move player as normal
+	// after player is moved, check space for action
 	private Player movePlayer(Player player) {
 		Property deed = null;
 		boolean playerTakesAnotherTurn = false;
@@ -115,60 +115,55 @@ public class GameController {
 					if (player.getMoney() > deed.getCost()) {
 						player.addProperty(deed, deed.getCost());
 						bank.removeProperty(deed);
-					}
-					else{
+					} else {
 						view.playerCannotBuy("Not enough money.");
 						Player winningPlayer = auctionProperty(deed, nextPlayer);
-						if(!winningPlayer.equals(null)){
-							if(winningPlayer.equals(player)){
+						if (!winningPlayer.equals(null)) {
+							if (winningPlayer.equals(player)) {
 								view.updatePlayerMoney(player.getMoney());
 							}
 						}
 					}
-				}
-				else{
+				} else {
 					Player winningPlayer = auctionProperty(deed, nextPlayer);
-					if(!winningPlayer.equals(null)){
-						if(winningPlayer.equals(player)){
+					if (!winningPlayer.equals(null)) {
+						if (winningPlayer.equals(player)) {
 							view.updatePlayerMoney(player.getMoney());
 						}
 					}
 				}
 			}
-			//if deed is owned by another player
-			else if(!deed.getOwner().equals(player) && !deed.isMortgaged()){
-				//calculate rent
+			// if deed is owned by another player
+			else if (!deed.getOwner().equals(player) && !deed.isMortgaged()) {
+				// calculate rent
 				Owner owner = deed.getOwner();
 				int numOwned = 0;
-				if(deed instanceof Street){
-					if(((Street) deed).hasHotel()){
+				if (deed instanceof Street) {
+					if (((Street) deed).hasHotel()) {
 						numOwned = 5;
-					}
-					else{
+					} else {
 						numOwned = ((Street) deed).getNumHouses();
 					}
-				}
-				else{
+				} else {
 					numOwned = board.propertiesOwnedOfType(deed);
 				}
 
 				int rent = deed.calculateRent(numOwned);
-				
-				//see if player can pay rent
-				if(player.getMoney() > rent){
+
+				// see if player can pay rent
+				if (player.getMoney() > rent) {
 					player.payRent(((Player) owner), rent);
 					view.updatePlayerMoney(player.getMoney());
 				}
-				//if they can't, see if they can sell or mortgage to get it
-				else{
+				// if they can't, see if they can sell or mortgage to get it
+				else {
 					getFunds(player, rent);
-					if(player.getMoney() > rent){
+					if (player.getMoney() > rent) {
 						player.payRent((Player) owner, rent);
 						view.updatePlayerMoney(player.getMoney());
-					}
-					else{
-						//remove player from game
-						
+					} else {
+						// remove player from game
+
 					}
 				}
 			}
@@ -176,7 +171,7 @@ public class GameController {
 			int spaceLoc = player.getLocation();
 			int tax = 0;
 			Space space = board.getBoardSpaces()[spaceLoc];
-			switch (space.getName()){
+			switch (space.getName()) {
 			case "Income Tax":
 				tax = 200;
 				payTax(player, tax);
@@ -189,26 +184,26 @@ public class GameController {
 				player.putInJail();
 				view.updatePlayerLocation(spaceLoc);
 				break;
-				default:
-					//do nothing
-					break;
-			}			
+			default:
+				// do nothing
+				break;
+			}
 		}
 
-		if(playerTakesAnotherTurn && players.contains(player)){
+		if (playerTakesAnotherTurn && players.contains(player)) {
 			nextPlayer = player;
 		}
 		return nextPlayer;
 	}
 
 	private void getFunds(Player player, int amount) {
-		while(player.propertiesOwned.size() > 0 && player.getMoney() < amount){
-			//get list of player deed names
-			//player can choose to sell or mortgage a property
-			//sell buildings on a property
-			//they can also choose to quit the game
+		while (player.propertiesOwned.size() > 0 && player.getMoney() < amount) {
+			// get list of player deed names
+			// player can choose to sell or mortgage a property
+			// sell buildings on a property
+			// they can also choose to quit the game
 			String response = view.askPlayerHowToPayBill(amount);
-			switch(response){
+			switch (response) {
 			case "sell property":
 				sellAProperty(player);
 				break;
@@ -216,79 +211,200 @@ public class GameController {
 				mortgageAProperty(player);
 				break;
 			case "sell house":
-				//get list of properties with houses
-				//get list of properties with houses that can be sold
-				//get property that player wants to sell house
-				//sell house off property
+				sellAHouse(player);
 				break;
 			case "sell hotel":
-				//get list of properties with hotels
-				//get property that player wants to sell hotel
-				//sell hotel off property
+				sellAHotel(player);
 				break;
 			case "quit game":
-				//remove player from game
+				// remove player from game
 				break;
 			default:
-					System.out.println("Unexpected way to pay rent.");
+				System.out.println("Unexpected way to pay rent.");
 			}
 		}
-		if(player.getMoney() < amount){
-			//remove player from game
+		if (player.getMoney() < amount) {
+			// remove player from game
 		}
 	}
 
-	//this method assumes the player has properties
-	private void mortgageAProperty(Player player) {
-		//get list of mortgage-able properties
-		List<String> propertiesCanMortgage = getPropertiesCanMortgage(player);
-		if(propertiesCanMortgage.size() > 0){
-			String propertyToMortgage = view.getPropertyToMortgage(player.getName(), propertiesCanMortgage);
-			Property mortgageProperty = board.getPropertyByName(propertyToMortgage);
-			if(mortgageProperty instanceof Street){
-				Street street = (Street) mortgageProperty;
-				if(street.hasHotel() || street.getNumHouses() > 0){
-					String choice = view.getPlayerSellPropertyWithBuildingChoice(propertyToMortgage);
-					if(choice.equals("yes")){
-						
-					}
-					else{
-						return;
-					}
+	private void sellAHotel(Player player) {
+		// get list of street names with hotels
+		List<String> streetsWithHotels = getStreetsWithHotels(player);
+		if(streetsWithHotels.isEmpty()){
+			view.tellPlayerNoStreetsHaveHotels(player);
+		}
+		else{
+			// get property that player wants to sell hotel
+			String streetName = view.getPlayerSellHotelChoice(player, streetsWithHotels);
+			Street street = (Street) board.getPropertyByName(streetName);
+			// sell hotel off property		
+			player.sellHotels(street);
+			view.updatePlayerMoney(player.getMoney());
+		}
+	}
+
+	private List<String> getStreetsWithHotels(Player player) {
+		List<String> streetsWithHotels = new ArrayList<String>();
+		for(Property property : player.propertiesOwned){
+			if(property instanceof Street){
+				Street street = (Street) property;
+				if(street.hasHotel()){
+					streetsWithHotels.add(street.getName());
 				}
-				
-				
 			}
 		}
-		//if list is > 0 then give player list to choose from
-		//mortgage property that player chose
-		//if list is 0 tell player no properties can be mortgaged
-		//and that they have to sell a building or all properties are mortgaged
+		return streetsWithHotels;
+	}
+
+	private void sellAHouse(Player player) {
+		// get list of properties with houses
+		List<Street> streetsWithHouses = getStreetsWithHouses(player);
+		if (streetsWithHouses.isEmpty()) {
+			view.tellPlayerNoStreetsHaveHouses(player);
+		} else {
+			// get list of properties with houses that can be sold
+			List<String> streetsThatCanSellAHouse = getStreetsThatCanSellAHouse(streetsWithHouses);
+			// get property that player wants to sell house
+			String streetToSellHouse = view.getPlayerSellHouseChoice(player, streetsThatCanSellAHouse);
+			Street streetSellingHouse = (Street) board.getPropertyByName(streetToSellHouse);
+			// sell house off property
+			player.sellHouse(streetSellingHouse);
+			view.updatePlayerMoney(player.getMoney());
+		}
+	}
+
+	private List<String> getStreetsThatCanSellAHouse(List<Street> streetsWithHouses) {
+
+		List<String> streetsThatCanSellAHouse = new ArrayList<String>();
+
+		while (!streetsWithHouses.isEmpty()) {
+			List<Street> streetsOfCurrentColor = new ArrayList<Street>();
+			Colors currentColor = null;
+			for (Street currentStreet : streetsWithHouses) {
+				if (streetsWithHouses.indexOf(currentStreet) == 0) {
+					currentColor = currentStreet.getColor();
+				}
+				if (currentStreet.getColor().equals(currentColor)) {
+					streetsOfCurrentColor.add(currentStreet);
+				}
+			}
+			int mostHouses = 0;
+			for (Street currentColorStreet : streetsOfCurrentColor) {
+				streetsWithHouses.remove(currentColorStreet);
+				if (currentColorStreet.getNumHouses() > mostHouses) {
+					mostHouses = currentColorStreet.getNumberOfBuildings();
+				}
+			}
+			for (Street currentColorStreet : streetsOfCurrentColor) {
+				if (currentColorStreet.getNumberOfBuildings() == mostHouses) {
+					streetsThatCanSellAHouse.add(currentColorStreet.getName());
+				}
+			}
+		}
+		return streetsThatCanSellAHouse;
+	}
+
+	private List<Street> getStreetsWithHouses(Player player) {
+		List<Street> streetsWithHouses = new ArrayList<Street>();
+		List<Street> streetsOwned = getStreetProperties(player.propertiesOwned);
+		for (Street streetOwned : streetsOwned) {
+			if (streetOwned.getNumHouses() > 0) {
+				streetsWithHouses.add(streetOwned);
+			}
+		}
+		return streetsWithHouses;
+	}
+
+	private List<Street> getStreetProperties(List<Property> propertiesOwned) {
+		List<Street> streets = new ArrayList<Street>();
+		for (Property property : propertiesOwned) {
+			if (property instanceof Street) {
+				streets.add((Street) property);
+			}
+		}
+		return streets;
+	}
+
+	// this method assumes the player has properties
+	private void mortgageAProperty(Player player) {
+		// get list of mortgage-able properties
+		List<String> propertiesCanMortgage = getPropertiesCanMortgage(player);
+		if (propertiesCanMortgage.size() > 0) {
+			String propertyToMortgage = view.getPropertyToMortgage(player.getName(), propertiesCanMortgage);
+			Property mortgageProperty = board.getPropertyByName(propertyToMortgage);
+			if (mortgageProperty instanceof Street) {
+				Street street = (Street) mortgageProperty;
+				if (street.hasHotel() || street.getNumHouses() > 0) {
+					String choice = view.getPlayerSellPropertyWithBuildingChoice(propertyToMortgage);
+					if (choice.equals("yes")) {
+						// get list of all streets of street color
+						List<Street> colorStreets = getListOfOwnedStreetsByColor(player, street);
+						// remove all buildings from all streets of this street
+						// color
+						for (Street thisStreet : colorStreets) {
+							player.sellHotels(thisStreet);
+							while (thisStreet.getNumHouses() > 0) {
+								player.sellHouse(thisStreet);
+							}
+						}
+						player.morgage(street);
+						view.updatePlayerMoney(player.getMoney());
+						// mortgage this street
+					} else {
+						view.tellPlayerAllPropertiesMortgaged();
+						return;
+					}
+				} else {
+					// no buildings so just mortgage street
+					player.morgage(street);
+					view.updatePlayerMoney(player.getMoney());
+				}
+			} else {
+				// property is railroad or utility
+				// so just mortgage it
+				player.morgage(mortgageProperty);
+				view.updatePlayerMoney(player.getMoney());
+			}
+		}
+	}
+
+	private List<Street> getListOfOwnedStreetsByColor(Player player, Street street) {
+		List<Street> colorStreets = new ArrayList<Street>();
+		for (Property property : player.propertiesOwned) {
+			if (property instanceof Street) {
+				Street thisStreet = (Street) property;
+				if (thisStreet.getColor().equals(street.getColor())) {
+					colorStreets.add(thisStreet);
+				}
+			}
+		}
+		return colorStreets;
 	}
 
 	private List<String> getStreetsThatCanSellBuildings(List<Street> streetsWithBuildings) {
 		List<String> streetsThatCanSellBuildings = new ArrayList<String>();
-		
-		while(!streetsWithBuildings.isEmpty()){
+
+		while (!streetsWithBuildings.isEmpty()) {
 			List<Street> streetsOfCurrentColor = new ArrayList<Street>();
 			Colors currentColor = null;
-			for(Street currentStreet : streetsWithBuildings){
-				if(streetsWithBuildings.indexOf(currentStreet) == 0){
+			for (Street currentStreet : streetsWithBuildings) {
+				if (streetsWithBuildings.indexOf(currentStreet) == 0) {
 					currentColor = currentStreet.getColor();
 				}
-				if(currentStreet.getColor().equals(currentColor)){
+				if (currentStreet.getColor().equals(currentColor)) {
 					streetsOfCurrentColor.add(currentStreet);
 				}
 			}
 			int mostBuildings = 0;
-			for(Street currentColorStreet : streetsOfCurrentColor){
+			for (Street currentColorStreet : streetsOfCurrentColor) {
 				streetsWithBuildings.remove(currentColorStreet);
-				if(currentColorStreet.getNumberOfBuildings() > mostBuildings){
+				if (currentColorStreet.getNumberOfBuildings() > mostBuildings) {
 					mostBuildings = currentColorStreet.getNumberOfBuildings();
 				}
 			}
-			for(Street currentColorStreet : streetsOfCurrentColor){
-				if(currentColorStreet.getNumberOfBuildings() == mostBuildings){
+			for (Street currentColorStreet : streetsOfCurrentColor) {
+				if (currentColorStreet.getNumberOfBuildings() == mostBuildings) {
 					streetsThatCanSellBuildings.add(currentColorStreet.getName());
 				}
 			}
@@ -298,43 +414,42 @@ public class GameController {
 
 	private List<String> getPropertiesCanMortgage(Player player) {
 		List<String> propertiesCanMortgage = new ArrayList<String>();
-		for(Property property : player.propertiesOwned){
-			if(!property.isMortgaged()){
+		for (Property property : player.propertiesOwned) {
+			if (!property.isMortgaged()) {
 				propertiesCanMortgage.add(property.getName());
 			}
 		}
 		return propertiesCanMortgage;
 	}
 
-	//this method assumes a player has properties
+	// this method assumes a player has properties
 	private void sellAProperty(Player player) {
-		//ask player what property they want to sell
-		//to who
-		//for how much
+		// ask player what property they want to sell
+		// to who
+		// for how much
 		// details = {property, buyer, price}
 		List<String> playerDeeds = new ArrayList<String>();
-		for(Property deed : player.propertiesOwned){
+		for (Property deed : player.propertiesOwned) {
 			playerDeeds.add(deed.getName());
 		}
 		List<String> otherPlayerNames = getOtherPlayerNames(player);
-		String [] details = view.askPlayerWhatPropertyToWhoHowMuch(player.getName(), playerDeeds, otherPlayerNames);
-		if(view.askPlayerIfTheyWantToBuy(player.getName(), details)){
+		String[] details = view.askPlayerWhatPropertyToWhoHowMuch(player.getName(), playerDeeds, otherPlayerNames);
+		if (view.askPlayerIfTheyWantToBuy(player.getName(), details)) {
 			Player buyer = board.getPlayerByName(details[1]);
 			Property deed = board.getPropertyByName(details[0]);
 			int price = Integer.parseInt(details[2]);
 			buyer.addProperty(deed, price);
 			player.removeProperty(deed, price);
 			view.updatePlayerMoney(player.getMoney());
-		}
-		else{
+		} else {
 			view.tellPlayerNoSale(player.getName(), details);
 		}
 	}
 
 	private List<String> getOtherPlayerNames(Player player) {
 		List<String> otherPlayerNames = new ArrayList<String>();
-		for(Player currentPlayer : players){
-			if(!currentPlayer.equals(player)){
+		for (Player currentPlayer : players) {
+			if (!currentPlayer.equals(player)) {
 				otherPlayerNames.add(currentPlayer.getName());
 			}
 		}
@@ -342,59 +457,57 @@ public class GameController {
 	}
 
 	private void payTax(Player player, int tax) {
-		if(player.getMoney() > tax){
+		if (player.getMoney() > tax) {
 			player.removeMoney(tax);
-		}		
-		else{
+		} else {
 			getFunds(player, tax);
-			if(player.getMoney() > tax){
+			if (player.getMoney() > tax) {
 				player.removeMoney(tax);
+			} else {
+				// remove player
 			}
-			else{
-				//remove player
-			}
-		}		
+		}
 	}
 
-	//returns player with highest bid or null if no player bids
+	// returns player with highest bid or null if no player bids
 	public Player auctionProperty(Property deed, Player player) {
 		int highestBid = 0;
 		String nameOfPlayerWithHighBid = "No One";
 		Player playerWithHighestBid = null;
 		List<Player> playersInAuction = new ArrayList<Player>();
-		for(Player p : players){
+		for (Player p : players) {
 			playersInAuction.add(p);
 		}
-		while(!playersInAuction.isEmpty()){
-			//get player bid from view if player has enough money to bid
-			//either the bid is higher than the highest bid
-			//or it returns as equal because the player didn't want to bid
-			//if player doesn't bid they are removed from auction
-			//player with highest bid after all players are removed from action wins the auction
+		while (!playersInAuction.isEmpty()) {
+			// get player bid from view if player has enough money to bid
+			// either the bid is higher than the highest bid
+			// or it returns as equal because the player didn't want to bid
+			// if player doesn't bid they are removed from auction
+			// player with highest bid after all players are removed from action
+			// wins the auction
 			int playerBid = highestBid;
-			if(player.getMoney() > highestBid){
-				playerBid = view.getPlayerBid(player.getName(), player.getMoney(), nameOfPlayerWithHighBid,
-						highestBid);
+			if (player.getMoney() > highestBid) {
+				playerBid = view.getPlayerBid(player.getName(), player.getMoney(), nameOfPlayerWithHighBid, highestBid);
 			}
-			if(playerBid > highestBid){
+			if (playerBid > highestBid) {
 				highestBid = playerBid;
 				playerWithHighestBid = player;
 				nameOfPlayerWithHighBid = player.getName();
 				player = board.getNextPlayer(playersInAuction, player);
-			}
-			else{
+			} else {
 				player = board.getNextPlayer(playersInAuction, player);
 				playersInAuction.remove(player);
 			}
 		}
 		if (!playerWithHighestBid.equals(null)) {
-			view.tellPlayerTheyWonBid(playerWithHighestBid.getName(), playerWithHighestBid.getMoney(), deed.getName(), highestBid);
+			view.tellPlayerTheyWonBid(playerWithHighestBid.getName(), playerWithHighestBid.getMoney(), deed.getName(),
+					highestBid);
 			playerWithHighestBid.addProperty(deed, highestBid);
 			bank.removeProperty(deed);
 		}
 		return playerWithHighestBid;
 	}
-	
+
 	public void printPlayerInfo() {
 		for (Player player : players) {
 			System.out.println("Player: " + player.getName() + "\nToken: " + player.getToken() + "\nPosition: "
