@@ -11,9 +11,13 @@ import cs414.a4.monopoly.backEnd.*;
 public class PlayerTest {
 	
 	Player player;
+	Street testStreet;
 
 	@Before
 	public void setUp() throws Exception {
+		player = new Player("JoeBob");
+		
+		testStreet = new Street("testStreet", 500, 200, 250);
 	}
 
 	@After
@@ -22,9 +26,6 @@ public class PlayerTest {
 
 	@Test
 	public void testBuyPropertyAble() {
-		player = new Player("JoeBob");
-		
-		Street testStreet = new Street("testStreet", 500, 200, 250);
 		player.addProperty(testStreet, testStreet.getCost());
 		
 		assertTrue(player.getProperties().contains(testStreet));
@@ -33,9 +34,6 @@ public class PlayerTest {
 	
 	@Test
 	public void testBuyPropertyCantAfford(){
-		player = new Player("JoeBob");
-		
-		Street testStreet = new Street("testStreet", 500, 200, 250);
 		player.removeMoney(1500);
 		player.addProperty(testStreet, testStreet.getCost());
 		
@@ -45,9 +43,6 @@ public class PlayerTest {
 	
 	@Test
 	public void testSellPropertyOwned(){
-		player = new Player("JoeBob");
-		
-		Street testStreet = new Street("testStreet", 500, 200, 250);
 		player.addProperty(testStreet);
 		
 		int moneyCheck = player.getMoney();
@@ -60,10 +55,6 @@ public class PlayerTest {
 	
 	@Test
 	public void testSellPropertyNotOwned(){
-		player = new Player("JoeBob");
-		
-		Street testStreet = new Street("testStreet", 500, 200, 250);
-		
 		int moneyCheck = player.getMoney();
 		player.removeProperty(testStreet, 500);
 		
@@ -73,9 +64,6 @@ public class PlayerTest {
 	
 	@Test
 	public void testBuyHouseAble(){
-		player = new Player("JoeBob");
-		
-		Street testStreet = new Street("testStreet", 500, 200, 250);
 		testStreet.setHouseCost(100);
 		testStreet.setHotelCost(200);
 		player.addProperty(testStreet);
@@ -89,9 +77,6 @@ public class PlayerTest {
 	
 	@Test
 	public void testBuyTooManyHouses(){
-		player = new Player("JoeBob");
-		
-		Street testStreet = new Street("testStreet", 500, 200, 250);
 		testStreet.setHouseCost(100);
 		testStreet.setHotelCost(200);
 		player.addProperty(testStreet);
@@ -108,9 +93,6 @@ public class PlayerTest {
 	
 	@Test
 	public void testBuyHotelAble(){
-		player = new Player("JoeBob");
-		
-		Street testStreet = new Street("testStreet", 500, 200, 250);
 		testStreet.setHouseCost(100);
 		testStreet.setHotelCost(200);
 		player.addProperty(testStreet);
@@ -128,9 +110,6 @@ public class PlayerTest {
 	
 	@Test
 	public void butHotelNotEnoughHouses(){
-		player = new Player("JoeBob");
-		
-		Street testStreet = new Street("testStreet", 500, 200, 250);
 		testStreet.setHouseCost(100);
 		testStreet.setHotelCost(200);
 		player.addProperty(testStreet);
@@ -152,9 +131,6 @@ public class PlayerTest {
 	
 	@Test
 	public void testBuyHotelHasHotel(){
-		player = new Player("JoeBob");
-		
-		Street testStreet = new Street("testStreet", 500, 200, 250);
 		testStreet.setHouseCost(100);
 		testStreet.setHotelCost(200);
 		player.addProperty(testStreet);
@@ -175,9 +151,6 @@ public class PlayerTest {
 	
 	@Test
 	public void testBuyHouseHasHotel(){
-		player = new Player("JoeBob");
-		
-		Street testStreet = new Street("testStreet", 500, 200, 250);
 		testStreet.setHouseCost(100);
 		testStreet.setHotelCost(200);
 		player.addProperty(testStreet);
