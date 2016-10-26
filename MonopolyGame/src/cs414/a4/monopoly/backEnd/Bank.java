@@ -98,5 +98,12 @@ public class Bank extends Owner{
 			this.housesInStock=true;
 		}
 	}
+	
+	//NEVER USE THIS! This is a helper method for testing only!
+	
+	public void resetBank(){
+		this.inventoryOfHotels = 12;
+		this.inventoryOfHouses = 32;
+	}
 
 }
