@@ -99,11 +99,11 @@ public class Bank extends Owner{
 		}
 	}
 	
-	public boolean getHousesInStock(){
+	public boolean getHasHouses(){
 		return housesInStock;
 	}
 	
-	public boolean getHotelsInStock(){
+	public boolean getHasHotels(){
 		return hotelsInStock;
 	}
 	
