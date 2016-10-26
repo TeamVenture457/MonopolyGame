@@ -1,7 +1,9 @@
 package cs414.a4.monopoly.backEnd;
 
 import javax.swing.plaf.synth.SynthEditorPaneUI;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class Player extends Owner{
 
@@ -182,6 +184,8 @@ public class Player extends Owner{
 
 	}
 
+	//Ben Hamor:
+	//I have written these methods specifically to use in JUnit tests
 	@Override
 	public boolean equals(Object other){
 		if(other instanceof Player){
@@ -190,6 +194,10 @@ public class Player extends Owner{
 		}
 
 		return false;
+	}
+	
+	public List<Property> getProperties(){
+		return propertiesOwned;
 	}
 
 }
