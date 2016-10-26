@@ -99,6 +99,14 @@ public class Bank extends Owner{
 		}
 	}
 	
+	public boolean getHousesInStock(){
+		return housesInStock;
+	}
+	
+	public boolean getHotelsInStock(){
+		return hotelsInStock;
+	}
+	
 	//NEVER USE THIS! This is a helper method for testing only!
 	
 	public void resetBank(){
