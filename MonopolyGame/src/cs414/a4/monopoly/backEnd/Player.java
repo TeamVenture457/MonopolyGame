@@ -69,7 +69,7 @@ public class Player extends Owner{
 		}
 	}
 
-	public void morgage(Property property) {
+	public void mortgage(Property property) {
 
 		if(propertiesOwned.contains(property)){
 			if(bank.mortgage(property)) {
