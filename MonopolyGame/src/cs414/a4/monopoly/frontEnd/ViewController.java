@@ -3,6 +3,8 @@ package cs414.a4.monopoly.frontEnd;
 import java.util.ArrayList;
 import java.util.List;
 
+import cs414.a4.monopoly.backEnd.Player;
+
 public class ViewController {
 
 	public ViewController() {
@@ -117,6 +119,26 @@ public class ViewController {
 	}
 
 	public String getPlayerSellPropertyWithBuildingChoice(String propertyToMortgage) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void tellPlayerNoStreetsHaveHouses(Player player) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String getPlayerSellHouseChoice(Player player, List<String> streetsThatCanSellAHouse) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void tellPlayerNoStreetsHaveHotels(Player player) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String getPlayerSellHotelChoice(Player player, List<String> streetsWithHotels) {
 		// TODO Auto-generated method stub
 		return null;
 	}
