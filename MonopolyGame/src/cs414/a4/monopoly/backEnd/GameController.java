@@ -113,7 +113,8 @@ public class GameController {
 				String choice = view.getPlayerBuyChoice(deed.getName());
 				if (choice.equals("yes")) {
 					if (player.getMoney() > deed.getCost()) {
-						board.sellPropertyFromBankToPlayer(deed, player);
+						player.addProperty(deed, deed.getCost());
+						bank.removeProperty(deed);
 					}
 					else{
 						view.playerCannotBuy("Not enough money.");
@@ -155,37 +156,19 @@ public class GameController {
 				
 				//see if player can pay rent
 				if(player.getMoney() > rent){
-					player.payRent(((Player)deed.getOwner()), rent);
+					player.payRent(((Player) owner), rent);
+					view.updatePlayerMoney(player.getMoney());
 				}
 				//if they can't, see if they can sell or mortgage to get it
 				else{
-					if(player.propertiesOwned.size() > 0){
-						//player can choose to sell or mortgage a property
-						//sell buildings on a property
-						//they can also choose to quit the game
-						String response = view.askPlayerHowToPayBill(rent);
-						switch(response){
-						case "sell property":
-							
-							break;
-						case "mortgage":
-
-							break;
-						case "sell house":
-
-							break;
-						case "sell hotel":
-
-							break;
-						case "quit game":
-
-							break;
-						default:
-								System.out.println("Unexpected way to pay rent.");
-						}
+					getFunds(player, rent);
+					if(player.getMoney() > rent){
+						player.payRent((Player) owner, rent);
+						view.updatePlayerMoney(player.getMoney());
 					}
 					else{
-						//remove player from the game
+						//remove player from game
+						
 					}
 				}
 			}
@@ -212,45 +195,84 @@ public class GameController {
 			}			
 		}
 
-		if(playerTakesAnotherTurn){
+		if(playerTakesAnotherTurn && players.contains(player)){
 			nextPlayer = player;
 		}
 		return nextPlayer;
 	}
 
-	private void payTax(Player player, int tax) {
-		if(player.getMoney() > tax){
-			player.removeMoney(tax);
-		}
-		else if(player.propertiesOwned.size() > 0){
+	private void getFunds(Player player, int amount) {
+		while(player.propertiesOwned.size() > 0 && player.getMoney() < amount){
+			//get list of player deed names
+			List<String> playerDeeds = new ArrayList<String>();
+			for(Property deed : player.propertiesOwned){
+				playerDeeds.add(deed.getName());
+			}
 			//player can choose to sell or mortgage a property
 			//sell buildings on a property
 			//they can also choose to quit the game
-			String response = view.askPlayerHowToPayBill(tax);
+			String response = view.askPlayerHowToPayBill(amount);
 			switch(response){
 			case "sell property":
+				//ask player what property they want to sell
+				//to who
+				//for how much
+				// details = {property, buyer, price}
 				
+				String [] details = view.askPlayerWhatPropertyToWhoHowMuch(player.getName(), playerDeeds);
+				if(view.askPlayerIfTheyWantToBuy(player.getName(), details)){
+					Player buyer = board.getPlayerByName(details[1]);
+					Property deed = board.getPropertyByName(details[0]);
+					int price = Integer.parseInt(details[2]);
+					buyer.addProperty(deed, price);
+					player.removeProperty(deed, price);
+				}
+				else{
+					view.tellPlayerNoSale(player.getName(), details);
+				}
 				break;
 			case "mortgage":
-				
+				//get list of mortgage-able properties
+				//if list is > 0 then give player list to choose from
+				//mortgage property that player chose
+				//if list is 0 tell player no properties can be mortgaged
+				//and that they have to sell a house or hotel
 				break;
 			case "sell house":
-				
+				//get list of properties with houses
+				//get list of properties with houses that can be sold
+				//get property that player wants to sell house
+
 				break;
 			case "sell hotel":
-				
+
 				break;
 			case "quit game":
-				
+				//remove player from game
+
 				break;
-				default:
+			default:
 					System.out.println("Unexpected way to pay rent.");
 			}
 		}
-		else{
+		if(player.getMoney() < amount){
 			//remove player from game
 		}
-		
+	}
+
+	private void payTax(Player player, int tax) {
+		if(player.getMoney() > tax){
+			player.removeMoney(tax);
+		}		
+		else{
+			getFunds(player, tax);
+			if(player.getMoney() > tax){
+				player.removeMoney(tax);
+			}
+			else{
+				//remove player
+			}
+		}		
 	}
 
 	//returns player with highest bid or null if no player bids
@@ -286,7 +308,8 @@ public class GameController {
 		}
 		if (!playerWithHighestBid.equals(null)) {
 			view.tellPlayerTheyWonBid(playerWithHighestBid.getName(), playerWithHighestBid.getMoney(), deed.getName(), highestBid);
-			board.auctionPropertyFromBankToPlayer(playerWithHighestBid, deed, highestBid);
+			playerWithHighestBid.addProperty(deed, highestBid);
+			bank.removeProperty(deed);
 		}
 		return playerWithHighestBid;
 	}
