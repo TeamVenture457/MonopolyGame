@@ -31,11 +31,20 @@ public class GameController {
 			finishTurn(currentPlayer);
 			currentPlayer = nextPlayer;
 		}
+		
+		//End Game if only 1 player left
+		if(players.size() == 1){
+			view.endGame(players.get(0).getName());
+			//More functionality? Exit game? exit system?  handled by the view? Not sure here.
+		}
 	}
 
 	private void finishTurn(Player currentPlayer) {
 		//get player choices for rest of turn
 		//until player chooses to end turn keep going
+		
+		//Same options as getFunds.  Add options to buy houses or hotels.
+		//Add method to ViewController to ask for this?
 	}
 
 	//this method is used to begin the turn and allows the player to move
@@ -44,7 +53,7 @@ public class GameController {
 	//if not in jail move player as normal
 	//after player is moved, check space for action
 	private Player movePlayer(Player player) {
-		Property deed = null;
+		Property deed = null; 
 		boolean playerTakesAnotherTurn = false;
 		Player nextPlayer = board.getNextPlayer(player);
 		// give view player name and player location on board
@@ -238,6 +247,8 @@ public class GameController {
 				//mortgage property that player chose
 				//if list is 0 tell player no properties can be mortgaged
 				//and that they have to sell a house or hotel
+				
+				
 				break;
 			case "sell house":
 				//get list of properties with houses
@@ -246,6 +257,9 @@ public class GameController {
 
 				break;
 			case "sell hotel":
+				//get list of properties with hotels
+				//get list of properties with hotels that can be sold
+				//get property that player wants to sell hotel
 
 				break;
 			case "quit game":
