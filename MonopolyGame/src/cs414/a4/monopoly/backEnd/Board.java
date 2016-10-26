@@ -45,6 +45,16 @@ public class Board {
 		return players;
 	}
 	
+	public Player getPlayerByName(String name){
+		Player playerNamed = null;
+		for(Player player : players){
+			if(player.getName().equals(name)){
+				playerNamed = player;
+			}
+		}
+		return playerNamed;
+	}
+	
 	public Property movePlayer(Player player, int distance){
 		player.movePlayer(distance);
 		return boardSpaces[player.getLocation()].getDeed();
@@ -255,6 +265,16 @@ public class Board {
 				System.out.println("Unexpected street color " + color + ".\n");
 		}
 		return thisColor;
+	}
+
+	public Property getPropertyByName(String propertyName) {
+		Property property = null;
+		for(Space space : boardSpaces){
+			if(space.getName().equals(propertyName)){
+				property = space.getDeed();
+			}
+		}
+		return property;
 	}
 
 	
