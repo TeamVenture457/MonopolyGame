@@ -83,5 +83,26 @@ public class ViewController {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	//return an array of strings 
+	// details = {property, buyer, price}
+	public String[] askPlayerWhatPropertyToWhoHowMuch(String name, List<String> playerDeeds) {
+		String [] details = new String[3];
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	//details = {property, buyer, price}
+	//playerName is selling party
+	public boolean askPlayerIfTheyWantToBuy(String playerName, String[] details) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	//details = {property, buyer, price}
+	public void tellPlayerNoSale(String playerName, String[] details) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
