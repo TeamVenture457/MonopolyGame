@@ -540,7 +540,7 @@ public class GameController {
 								player.sellHouse(thisStreet);
 							}
 						}
-						player.morgage(street);
+						player.mortgage(street);
 						view.updatePlayerMoney(player.getMoney());
 						// mortgage this street
 					} else {
@@ -549,13 +549,13 @@ public class GameController {
 					}
 				} else {
 					// no buildings so just mortgage street
-					player.morgage(street);
+					player.mortgage(street);
 					view.updatePlayerMoney(player.getMoney());
 				}
 			} else {
 				// property is railroad or utility
 				// so just mortgage it
-				player.morgage(mortgageProperty);
+				player.mortgage(mortgageProperty);
 				view.updatePlayerMoney(player.getMoney());
 			}
 		}
