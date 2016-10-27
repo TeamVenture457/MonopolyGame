@@ -162,5 +162,25 @@ public class ViewController {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public void tellPlayerBuyerCannotBuy(String name, String name2, int price) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String getPlayerBuyHotelChoice(String name, List<String> streetsThatCanBuyAHotel) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void tellPlayerCannotAffordHouse(String name, int houseCost) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void tellPlayerHotelBought(String name, String name2) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
