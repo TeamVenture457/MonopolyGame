@@ -1,7 +1,9 @@
 package cs414.a4.monopoly.backEnd;
 
 import javax.swing.plaf.synth.SynthEditorPaneUI;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class Player extends Owner{
 
@@ -79,7 +81,7 @@ public class Player extends Owner{
 		}
 	}
 
-	public void morgage(Property property) {
+	public void mortgage(Property property) {
 
 		if(propertiesOwned.contains(property)){
 			if(bank.mortgage(property)) {
@@ -193,6 +195,22 @@ public class Player extends Owner{
 		setIsInJail(false);
 		turnsInJail = 0;
 
+	}
+
+	//Ben Hamor:
+	//I have written these methods specifically to use in JUnit tests
+	@Override
+	public boolean equals(Object other){
+		if(other instanceof Player){
+			Player otherPlayer = (Player) other;
+			return this.name.equals(otherPlayer.getName());
+		}
+
+		return false;
+	}
+	
+	public List<Property> getProperties(){
+		return propertiesOwned;
 	}
 
 }
