@@ -33,16 +33,129 @@ public class GameController {
 		}
 	}
 
-	private void finishTurn(Player currentPlayer) {
-		// get player choices for rest of turn
+	private void finishTurn(Player player) {
+		boolean turnFinished = false;
+		while(!turnFinished){
+			// get player choices for rest of turn
+			String response = view.getPlayerFinishTurnChoice(player.getName());
+			switch (response) {
+			case "sell property":
+				sellAProperty(player);
+				break;
+			case "mortgage":
+				mortgageAProperty(player);
+				break;
+			case "buy house":
+				buyAHouse(player);
+				break;
+			case "sell house":
+				sellAHouse(player);
+				break;
+			case "buy hotel":
+				//get list street names that can buy a hotel
+				//if list is empty tell player they cannot buy a house
+				//else get player choice to buy hotel
+				//buy hotel
+				//tell view hotel bought
+				break;
+			case "sell hotel":
+				sellAHotel(player);
+				break;
+			case "quit game":
+				// remove player from game
+				break;
+			default:
+				System.out.println("Unexpected way to pay rent.");
+			}
+		}
 		// until player chooses to end turn keep going
 	}
 
-	// this method is used to begin the turn and allows the player to move
-	// if in jail, player chooses to roll or pay
-	// if 3rd turn rolling and no doubles then they have to pay.
-	// if not in jail move player as normal
-	// after player is moved, check space for action
+	private void buyAHouse(Player player) {
+		//get list streets you have all colors
+		List<Street> streetsWithAllColors = getStreetsWithAllColors(player);
+		//get list street names that can buy a house
+		List<String> streetsThatCanBuyAHouse = getStreetsThatCanBuyAHouse(streetsWithAllColors);
+		//if list is empty tell player they cannot buy a house
+		if(streetsThatCanBuyAHouse.isEmpty()){
+			view.tellPlayerNoStreetsToBuyAHouse(player.getName());
+		}
+		//else get player street choice to buy house
+		else{
+			String streetName = view.getPlayerBuyHouseChoice(player.getName(), streetsThatCanBuyAHouse);
+			Street streetToBuyHouse = (Street) board.getPropertyByName(streetName);
+			//buy house 
+			player.buyHouse(streetToBuyHouse);
+			view.updatePlayerMoney(player.getMoney());
+			//tell view house bought					
+			view.tellPlayerHouseBought(player.getName(), streetToBuyHouse.getName());
+		}
+	}
+
+	private List<String> getStreetsThatCanBuyAHouse(List<Street> streetsWithAllColors) {
+		List<String> streetsThatCanBuyAHouse = new ArrayList<String>();
+		while(!streetsWithAllColors.isEmpty()){
+			Colors thisColor = null;
+			List<Street> streetsOfThisColor = new ArrayList<Street>();
+			for(Street street : streetsWithAllColors){
+				if(streetsWithAllColors.indexOf(street) == 0){
+					thisColor = street.getColor();
+				}
+				if(street.getColor().equals(thisColor)){
+					streetsOfThisColor.add(street);
+				}
+			}
+			int minHouses = 4;
+			for(Street street : streetsOfThisColor){
+				if(street.getNumHouses() < minHouses && !street.hasHotel()){
+					minHouses = street.getNumHouses();
+				}
+			}
+			if(minHouses < 4){
+				for(Street street : streetsOfThisColor){
+					if(street.getNumHouses() == minHouses){
+						streetsThatCanBuyAHouse.add(street.getName());
+					}
+				}
+			}
+		}
+		return streetsThatCanBuyAHouse;
+	}
+
+	private List<Street> getStreetsWithAllColors(Player player) {
+		List<Street> streetsPlayerOwns = new ArrayList<Street>();
+		for(Property property : player.propertiesOwned){
+			if(property instanceof Street){
+				streetsPlayerOwns.add((Street) property);
+			}
+		}
+		List<Street> streetsWithAllColors = new ArrayList<Street>();
+		while (!streetsPlayerOwns.isEmpty()) {
+			Colors thisColor = null;
+			List<Street> streetsOfThisColor = new ArrayList<Street>();
+			for (Street streetOwned : streetsPlayerOwns) {
+				if (streetsPlayerOwns.indexOf(streetOwned) == 0) {
+					thisColor = streetOwned.getColor();
+				}
+				if(thisColor.equals(streetOwned.getColor())){
+					streetsOfThisColor.add(streetOwned);
+				}
+			}
+			List<Street> streetsExpectedOfThisColor = board.getStreetsOfColor(thisColor);
+			if(streetsExpectedOfThisColor.size() == streetsOfThisColor.size()){
+				streetsWithAllColors.addAll(streetsOfThisColor);
+			}
+		}
+		return streetsWithAllColors;
+	}
+
+	/**
+	 * this method is used to begin the turn and allows the player to move
+	 * if in jail, player chooses to roll or pay
+	 * if 3rd turn rolling and no doubles then they have to pay.
+	 * if not in jail move player as normal
+	 * after player is moved, check space for action
+	 **/
 	private Player movePlayer(Player player) {
 		Property deed = null;
 		boolean playerTakesAnotherTurn = false;
@@ -79,13 +192,18 @@ public class GameController {
 					}
 				}
 			} else {
-				player.removeMoney(50);
-				view.updatePlayerMoney(player.getMoney());
-				player.takeOutofJail();
-				view.updatePlayerLocation(player.getLocation());
-				deed = board.movePlayer(player, diceRoll);
-				view.updatePlayerLocation(player.getLocation());
-				view.updatePlayerMoney(player.getMoney());
+				if (player.getMoney() > 50) {
+					player.removeMoney(50);
+					view.updatePlayerMoney(player.getMoney());
+					player.takeOutofJail();
+					view.updatePlayerLocation(player.getLocation());
+					deed = board.movePlayer(player, diceRoll);
+					view.updatePlayerLocation(player.getLocation());
+					view.updatePlayerMoney(player.getMoney());
+				}
+				else{
+					//remove player from game
+				}
 			}
 			player.consecutiveTurns = 0;
 		}
@@ -108,6 +226,7 @@ public class GameController {
 			view.updatePlayerMoney(player.getMoney());
 		}
 
+		//player landed on a property
 		if (deed instanceof Property) {
 			if (deed.getOwner().equals(bank)) {
 				String choice = view.getPlayerBuyChoice(deed.getName());
@@ -167,7 +286,9 @@ public class GameController {
 					}
 				}
 			}
-		} else {
+		} 
+		//player landed on a non-property space
+		else {
 			int spaceLoc = player.getLocation();
 			int tax = 0;
 			Space space = board.getBoardSpaces()[spaceLoc];
@@ -202,7 +323,7 @@ public class GameController {
 			// player can choose to sell or mortgage a property
 			// sell buildings on a property
 			// they can also choose to quit the game
-			String response = view.askPlayerHowToPayBill(amount);
+			String response = view.askPlayerHowToGetFunds(amount);
 			switch (response) {
 			case "sell property":
 				sellAProperty(player);
@@ -232,11 +353,11 @@ public class GameController {
 		// get list of street names with hotels
 		List<String> streetsWithHotels = getStreetsWithHotels(player);
 		if(streetsWithHotels.isEmpty()){
-			view.tellPlayerNoStreetsHaveHotels(player);
+			view.tellPlayerNoStreetsHaveHotels(player.getName());
 		}
 		else{
 			// get property that player wants to sell hotel
-			String streetName = view.getPlayerSellHotelChoice(player, streetsWithHotels);
+			String streetName = view.getPlayerSellHotelChoice(player.getName(), streetsWithHotels);
 			Street street = (Street) board.getPropertyByName(streetName);
 			// sell hotel off property		
 			player.sellHotels(street);
@@ -261,12 +382,12 @@ public class GameController {
 		// get list of properties with houses
 		List<Street> streetsWithHouses = getStreetsWithHouses(player);
 		if (streetsWithHouses.isEmpty()) {
-			view.tellPlayerNoStreetsHaveHouses(player);
+			view.tellPlayerNoStreetsHaveHouses(player.getName());
 		} else {
 			// get list of properties with houses that can be sold
 			List<String> streetsThatCanSellAHouse = getStreetsThatCanSellAHouse(streetsWithHouses);
 			// get property that player wants to sell house
-			String streetToSellHouse = view.getPlayerSellHouseChoice(player, streetsThatCanSellAHouse);
+			String streetToSellHouse = view.getPlayerSellHouseChoice(player.getName(), streetsThatCanSellAHouse);
 			Street streetSellingHouse = (Street) board.getPropertyByName(streetToSellHouse);
 			// sell house off property
 			player.sellHouse(streetSellingHouse);
