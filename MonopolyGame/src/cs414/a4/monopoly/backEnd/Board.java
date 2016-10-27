@@ -277,5 +277,19 @@ public class Board {
 		return property;
 	}
 
+	public List<Street> getStreetsOfColor(Colors thisColor) {
+		List<Street> streetsOfColor = new ArrayList<Street>();
+		for(Space space : boardSpaces){
+			Property deed = space.getDeed();
+			if( deed instanceof Street){
+				Street street = (Street) deed;
+				if(street.getColor().equals(thisColor)){
+					streetsOfColor.add(street);
+				}
+			}
+		}
+		return streetsOfColor;
+	}
+
 	
 }
