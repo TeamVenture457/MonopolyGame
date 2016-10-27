@@ -52,15 +52,13 @@ public class GameController {
 				sellAHouse(player);
 				break;
 			case "buy hotel":
-				//get list street names that can buy a hotel
-				//if list is empty tell player they cannot buy a house
-				//else get player choice to buy hotel
-				//buy hotel
-				//tell view hotel bought
+				buyAHotel(player);
 				break;
 			case "sell hotel":
 				sellAHotel(player);
 				break;
+			case "finish turn":
+				turnFinished = true;
 			case "quit game":
 				// remove player from game
 				break;
@@ -69,6 +67,64 @@ public class GameController {
 			}
 		}
 		// until player chooses to end turn keep going
+	}
+
+	private void buyAHotel(Player player) {
+		//get list streets you have all colors
+		List<Street> streetsWithAllColors = getStreetsWithAllColors(player);
+		//get list street names that can buy a hotel
+		List<String> streetsThatCanBuyAHotel = getStreetsThatCanBuyAHotel(streetsWithAllColors);
+		//if list is empty tell player they cannot buy a hotel
+		if(streetsThatCanBuyAHotel.isEmpty()){
+			
+		}
+		//else get player choice to buy hotel
+		else{
+			String streetName = view.getPlayerBuyHotelChoice(player.getName(), streetsThatCanBuyAHotel);
+			Street streetToBuyHotel = (Street) board.getPropertyByName(streetName);
+			//check if player has enough money
+			if(player.getMoney() < streetToBuyHotel.getHotelCost()){
+				view.tellPlayerCannotAffordHouse(player.getName(), streetToBuyHotel.getHotelCost());
+			}
+			//buy hotel
+			else{
+				player.buyHotel(streetToBuyHotel);
+				view.updatePlayerMoney(player.getMoney());
+				// tell view house bought
+				view.tellPlayerHotelBought(player.getName(), streetToBuyHotel.getName());
+			}
+		}		
+	}
+
+	private List<String> getStreetsThatCanBuyAHotel(List<Street> streetsWithAllColors) {
+		List<String> streetsThatCanBuyAHotel = new ArrayList<String>();
+		while(!streetsWithAllColors.isEmpty()){
+			Colors thisColor = null;
+			List<Street> streetsOfThisColor = new ArrayList<Street>();
+			for(Street street : streetsWithAllColors){
+				if(streetsWithAllColors.indexOf(street) == 0){
+					thisColor = street.getColor();
+				}
+				if(street.getColor().equals(thisColor)){
+					streetsOfThisColor.add(street);
+				}
+			}
+			boolean allStreetsHaveMinBuildings = true;
+			for(Street street : streetsOfThisColor){
+				streetsWithAllColors.remove(street);
+				if(street.getNumberOfBuildings() < 4){
+					allStreetsHaveMinBuildings = false;
+				}
+			}
+			if(allStreetsHaveMinBuildings){
+				for(Street street : streetsOfThisColor){
+					if(street.getNumHouses() == 4){
+						streetsThatCanBuyAHotel.add(street.getName());
+					}
+				}
+			}
+		}
+		return streetsThatCanBuyAHotel;
 	}
 
 	private void buyAHouse(Player player) {
@@ -84,11 +140,16 @@ public class GameController {
 		else{
 			String streetName = view.getPlayerBuyHouseChoice(player.getName(), streetsThatCanBuyAHouse);
 			Street streetToBuyHouse = (Street) board.getPropertyByName(streetName);
-			//buy house 
-			player.buyHouse(streetToBuyHouse);
-			view.updatePlayerMoney(player.getMoney());
-			//tell view house bought					
-			view.tellPlayerHouseBought(player.getName(), streetToBuyHouse.getName());
+			if(player.getMoney() < streetToBuyHouse.getHouseCost()){
+				view.tellPlayerCannotAffordHouse(player.getName(), streetToBuyHouse.getHouseCost());
+			}
+			// buy house
+			else {
+				player.buyHouse(streetToBuyHouse);
+				view.updatePlayerMoney(player.getMoney());
+				// tell view house bought
+				view.tellPlayerHouseBought(player.getName(), streetToBuyHouse.getName());
+			}
 		}
 	}
 
@@ -107,6 +168,7 @@ public class GameController {
 			}
 			int minHouses = 4;
 			for(Street street : streetsOfThisColor){
+				streetsWithAllColors.remove(street);
 				if(street.getNumHouses() < minHouses && !street.hasHotel()){
 					minHouses = street.getNumHouses();
 				}
@@ -559,9 +621,13 @@ public class GameController {
 			Player buyer = board.getPlayerByName(details[1]);
 			Property deed = board.getPropertyByName(details[0]);
 			int price = Integer.parseInt(details[2]);
-			buyer.addProperty(deed, price);
-			player.removeProperty(deed, price);
-			view.updatePlayerMoney(player.getMoney());
+			if(buyer.getMoney() < price){
+				view.tellPlayerBuyerCannotBuy(player.getName(), buyer.getName(), price);
+			} else {
+				buyer.addProperty(deed, price);
+				player.removeProperty(deed, price);
+				view.updatePlayerMoney(player.getMoney());
+			}
 		} else {
 			view.tellPlayerNoSale(player.getName(), details);
 		}
