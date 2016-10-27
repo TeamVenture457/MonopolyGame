@@ -44,6 +44,33 @@ public class Board {
 	public List<Player> getPlayers(){
 		return players;
 	}
+	
+	public Player getPlayerByName(String name){
+		Player playerNamed = null;
+		for(Player player : players){
+			if(player.getName().equals(name)){
+				playerNamed = player;
+			}
+		}
+		return playerNamed;
+	}
+	
+	public Property movePlayer(Player player, int distance){
+		player.movePlayer(distance);
+		int location = player.getLocation();
+		Space space = boardSpaces[location];
+		Property deed = space.getDeed();
+		return deed;
+	}
+	
+	public Player getNextPlayer(Player currentPlayer) {
+		int nextPlayerIndex = (players.indexOf(currentPlayer) + 1) % players.size();
+		return players.get(nextPlayerIndex);
+	}
+
+	public Player getNextPlayer(List<Player> playersInAuction, Player player) {
+		int nextPlayerIndex = (playersInAuction.indexOf(player) + 1) % playersInAuction.size();
+		return playersInAuction.get(nextPlayerIndex);	}
 
 	private Boolean getXMLDoc() {
 		try {
@@ -133,6 +160,36 @@ public class Board {
 		//System.out.println("Bank property list size: " + bank.propertiesOwned.size());
 	}
 
+	//this method finds the number of railroads owned
+	//number of utilities owned
+	//number of streets of street color owned
+	//it just returns the number 
+	public int propertiesOwnedOfType(Property property){
+		Owner owner = property.getOwner();
+		List<Object> propertiesOwned = new ArrayList<Object>();
+		for(Property deed : owner.propertiesOwned){
+			if(property instanceof Street){
+				if(deed instanceof Street){
+					if(((Street) property).getColor().equals(((Street) deed).getColor())){
+						propertiesOwned.add(deed);
+					}
+				}
+			}
+			else if(property instanceof Railroad){
+				if(deed instanceof Railroad){
+					propertiesOwned.add(deed);
+				}
+			}
+			
+			else{
+				if(deed instanceof Utility){
+					propertiesOwned.add(deed);
+				}
+			}
+		}
+		return propertiesOwned.size();
+	}
+	
 	private SpaceType getSpaceType(String type, String spaceName) {
 		SpaceType thisSpaceType = null;
 		switch (type) {
@@ -213,4 +270,29 @@ public class Board {
 		return thisColor;
 	}
 
+	public Property getPropertyByName(String propertyName) {
+		Property property = null;
+		for(Space space : boardSpaces){
+			if(space.getName().equals(propertyName)){
+				property = space.getDeed();
+			}
+		}
+		return property;
+	}
+
+	public List<Street> getStreetsOfColor(Colors thisColor) {
+		List<Street> streetsOfColor = new ArrayList<Street>();
+		for(Space space : boardSpaces){
+			Property deed = space.getDeed();
+			if( deed instanceof Street){
+				Street street = (Street) deed;
+				if(street.getColor().equals(thisColor)){
+					streetsOfColor.add(street);
+				}
+			}
+		}
+		return streetsOfColor;
+	}
+
+	
 }
