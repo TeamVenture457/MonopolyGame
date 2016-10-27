@@ -57,7 +57,10 @@ public class Board {
 	
 	public Property movePlayer(Player player, int distance){
 		player.movePlayer(distance);
-		return boardSpaces[player.getLocation()].getDeed();
+		int location = player.getLocation();
+		Space space = boardSpaces[location];
+		Property deed = space.getDeed();
+		return deed;
 	}
 	
 	public Player getNextPlayer(Player currentPlayer) {
