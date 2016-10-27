@@ -81,11 +81,6 @@ public class ViewController {
 		return null;
 	}
 
-	public String askPlayerHowToPayBill(int tax) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	//return an array of strings 
 	// details = {property, buyer, price}
 	public String[] askPlayerWhatPropertyToWhoHowMuch(String name, List<String> playerDeeds, List<String> otherPlayerNames) {
@@ -123,24 +118,49 @@ public class ViewController {
 		return null;
 	}
 
-	public void tellPlayerNoStreetsHaveHouses(Player player) {
+	public void tellPlayerNoStreetsHaveHouses(String playerName) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public String getPlayerSellHouseChoice(Player player, List<String> streetsThatCanSellAHouse) {
+	public String getPlayerSellHouseChoice(String playerName, List<String> streetsThatCanSellAHouse) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public void tellPlayerNoStreetsHaveHotels(Player player) {
+	public void tellPlayerNoStreetsHaveHotels(String playerName) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public String getPlayerSellHotelChoice(Player player, List<String> streetsWithHotels) {
+	public String getPlayerSellHotelChoice(String playerName, List<String> streetsWithHotels) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public String askPlayerHowToGetFunds(int amount) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getPlayerFinishTurnChoice(String playerName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void tellPlayerNoStreetsToBuyAHouse(String playerName) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String getPlayerBuyHouseChoice(String playerName, List<String> streetsThatCanBuyAHouse) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void tellPlayerHouseBought(String playerName, String streetName) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
