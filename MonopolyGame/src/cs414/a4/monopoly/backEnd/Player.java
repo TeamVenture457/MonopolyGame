@@ -12,7 +12,8 @@ public class Player extends Owner{
 	private boolean isInJail;
 	private int money;
 	private Bank bank;
-	private int turnsInJail;
+	protected int turnsInJail;
+	protected int consecutiveTurns;
 
 	public Player(String name) {
 		this.name = name;
@@ -21,11 +22,22 @@ public class Player extends Owner{
 		this.location = 0;
 		this.isInJail = false;
 		turnsInJail = 0;
+		consecutiveTurns = 0;
 		propertiesOwned = new ArrayList<Property>();
 	}
 	
-	public boolean isInJail(){
-		return isInJail;
+	public void movePlayer(int distance){
+		int currentLocation = location; 
+		int nextLocation = (location + distance) % 40;
+		if(nextLocation < currentLocation){
+			addMoney(200);
+		}
+		location = nextLocation;
+	}
+	
+	public void payRent(Player owner, int amount){
+		this.removeMoney(amount);
+		owner.addMoney(amount);
 	}
 
 	public void buyHouse(Street street){
@@ -179,6 +191,7 @@ public class Player extends Owner{
 	public void takeOutofJail(){
 		this.location=10;
 		setIsInJail(false);
+		turnsInJail = 0;
 
 	}
 
