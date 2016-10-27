@@ -31,6 +31,12 @@ public class GameController {
 			finishTurn(currentPlayer);
 			currentPlayer = nextPlayer;
 		}
+
+		//End Game if only 1 player left
+		if(players.size() == 1){
+			view.endGame(players.get(0).getName());
+			//More functionality? Exit game? exit system?  handled by the view? Not sure here.
+		}
 	}
 
 	private void finishTurn(Player player) {
@@ -76,7 +82,7 @@ public class GameController {
 		List<String> streetsThatCanBuyAHotel = getStreetsThatCanBuyAHotel(streetsWithAllColors);
 		//if list is empty tell player they cannot buy a hotel
 		if(streetsThatCanBuyAHotel.isEmpty()){
-			
+
 		}
 		//else get player choice to buy hotel
 		else{
@@ -93,7 +99,7 @@ public class GameController {
 				// tell view house bought
 				view.tellPlayerHotelBought(player.getName(), streetToBuyHotel.getName());
 			}
-		}		
+		}
 	}
 
 	private List<String> getStreetsThatCanBuyAHotel(List<Street> streetsWithAllColors) {
@@ -342,15 +348,15 @@ public class GameController {
 					if (player.getMoney() > rent) {
 						player.payRent((Player) owner, rent);
 						view.updatePlayerMoney(player.getMoney());
-					} else {
-						// remove player from game
+					}
+					else{
+						//remove player from game
+						removePlayerFromGame(player);
 
 					}
 				}
 			}
-		} 
-		//player landed on a non-property space
-		else {
+		} else {
 			int spaceLoc = player.getLocation();
 			int tax = 0;
 			Space space = board.getBoardSpaces()[spaceLoc];
@@ -400,14 +406,17 @@ public class GameController {
 				sellAHotel(player);
 				break;
 			case "quit game":
-				// remove player from game
+				//remove player from game
+				removePlayerFromGame(player);
+
 				break;
 			default:
 				System.out.println("Unexpected way to pay rent.");
 			}
 		}
-		if (player.getMoney() < amount) {
-			// remove player from game
+		if(player.getMoney() < amount){
+			//remove player from game
+			removePlayerFromGame(player);
 		}
 	}
 
@@ -421,7 +430,7 @@ public class GameController {
 			// get property that player wants to sell hotel
 			String streetName = view.getPlayerSellHotelChoice(player.getName(), streetsWithHotels);
 			Street street = (Street) board.getPropertyByName(streetName);
-			// sell hotel off property		
+			// sell hotel off property
 			player.sellHotels(street);
 			view.updatePlayerMoney(player.getMoney());
 		}
@@ -650,8 +659,10 @@ public class GameController {
 			getFunds(player, tax);
 			if (player.getMoney() > tax) {
 				player.removeMoney(tax);
-			} else {
-				// remove player
+			}
+			else{
+				//remove player
+				removePlayerFromGame(player);
 			}
 		}
 	}
@@ -709,6 +720,22 @@ public class GameController {
 
 	public List<String> getPlayerNames() {
 		return game.getPlayerNamesInOrder();
+	}
+
+	private void removePlayerFromGame(Player player){
+		players.remove(player);
+		for(Property deed : player.propertiesOwned){
+			if(deed instanceof Street){
+				while(((Street) deed).getNumHouses() > 0){
+					((Street) deed).removeHouse();
+				}
+				while(((Street) deed).hasHotel()){
+					((Street) deed).removeHotel();
+				}
+			}
+			player.removeProperty(deed);
+			bank.addProperty(deed);
+		}
 	}
 
 	public static void main(String[] args) {

@@ -183,4 +183,8 @@ public class ViewController {
 		
 	}
 	
+	public void endGame(String winnerName){
+		//Display winner
+	}
+	
 }
