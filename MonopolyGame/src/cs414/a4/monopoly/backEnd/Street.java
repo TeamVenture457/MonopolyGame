@@ -160,5 +160,13 @@ public class Street extends Property{
 		}
 		return rent;
 	}
+	public int getNumberOfBuildings(){
+		if(hasHotel()){
+			return 5;
+		}
+		else{
+			return getNumHouses();
+		}
+	}
 
 }
