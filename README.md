@@ -20,7 +20,17 @@ deducted.
 	
 	4. The reply lines are not dotted in our diagrams. The software doesn't have this functionality.
 	
-	
+Github Log:
+The github log has been saved as a plain text file called gitlog.txt.
+
+
+
+
+
+NOTE: Even though some people have less commits. Other things were done that did not require 
+frequent commits and/or coding. (Diagrams, List of system tests, etc.)
+Everyone on the team is satisfied with the amount of participation and effort put forth by everyone 
+else. 
 
 
  
