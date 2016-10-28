@@ -17,6 +17,10 @@ deducted.
 	
 	3. The enumeration classes are not connected with association lines. Professor Gosh 
 	said this is fine.
+	
+	4. The reply lines are not dotted in our diagrams. The software doesn't have this functionality.
+	
+	
 
 
  
